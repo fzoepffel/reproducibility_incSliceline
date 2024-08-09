@@ -9,18 +9,37 @@ X = X[, 1:8];
 
 nrows = matrix(0, 10, 1);
 sigma = $3;
+
+
+# Define start, end, and number of points
+start = 1;
+end = nrow(X) -1;
+num_points = 10;
+
+# Calculate the logarithms of the start and end points
+log_start = log(start);
+log_end = log(end);
+
+# Calculate the increment in the logarithmic space
+log_increment = (log_end - log_start) / (num_points - 1);
+
+# Generate logarithmically spaced points
+logarithmic_points = matrix(0, num_points, 1);
+for (i in 1:num_points) {
+    log_value = log_start + (i-1) * log_increment;
+    logarithmic_points[i,1] = floor(exp(log_value));
+}
+
 addition = floor(nrow(X) / 10);
 
-nrows[1,1] = 1;
-
-for(i in 2:10) {
-  nrows[i, 1] = as.scalar(nrows[i-1,1]) + addition;
-}
+nrows = logarithmic_points;
 
 write(nrows, "results/Experiment1_addedXSize.dat", format="csv");
 
-## TODO: n should increase logarithmically instead of linearly
-n = 1;
+
+
+
+n = as.scalar(logarithmic_points[1,1]);
 i = 1;
 
 
@@ -48,7 +67,7 @@ while(n < nrow(X)){
     timeTaken = timeTaken / 10;
 
     write(timeTaken, "results/Experiment1_times" +i + ".dat", format="csv");
-    n = n + addition;
+    n = as.scalar(logarithmic_points[i+1, 1]);
     i = i + 1;
 }
 
