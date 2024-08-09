@@ -1,0 +1,6 @@
+
+data/
+lib/
+SystemDS.jar
+results/*
+plots/*

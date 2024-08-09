@@ -1,0 +1,160 @@
+X = read($1);
+e = read($2);
+
+X = X[, 1:8];
+
+n = ceil(nrow(X)/100);
+
+oldX = X[1:nrow(X) - n * 10 ,  1:8]
+addedX1 = X[nrow(X) - n*10 + 1 : nrow(X) - n*9,  ]
+oldE = e[1:nrow(e) - n * 10 ,]
+addedE1 = e[nrow(e) - n *10 + 1 : nrow(e) - n*9, ]
+
+addedX2 = X[nrow(X) - n*9 + 1 : nrow(X) - n*8,  ]
+addedE2 = e[nrow(e) - n *9 + 1 : nrow(e) - n*8, ]
+
+addedX3 = X[nrow(X) - n*8 + 1 : nrow(X) - n*7,  ]
+addedE3 = e[nrow(e) - n *8 + 1 : nrow(e) - n*7, ]
+
+addedX4 = X[nrow(X) - n*7 + 1 : nrow(X) - n*6,  ]
+addedE4 = e[nrow(e) - n *7 + 1 : nrow(e) - n*6, ]
+
+addedX5 = X[nrow(X) - n*6 + 1 : nrow(X) - n*5,  ]
+addedE5 = e[nrow(e) - n *6 + 1 : nrow(e) - n*5, ]
+
+addedX6 = X[nrow(X) - n*5 + 1 : nrow(X) - n*4,  ]
+addedE6 = e[nrow(e) - n *5 + 1 : nrow(e) - n*4, ]
+
+addedX7 = X[nrow(X) - n*4 + 1 : nrow(X) - n*3,  ]
+addedE7 = e[nrow(e) - n *4 + 1 : nrow(e) - n*3, ]
+
+addedX8 = X[nrow(X) - n*3 + 1 : nrow(X) - n*2,  ]
+addedE8 = e[nrow(e) - n *3 + 1 : nrow(e) - n*2, ]
+
+addedX9 = X[nrow(X) - n*2 + 1 : nrow(X) - n,  ]
+addedE9 = e[nrow(e) - n *2 + 1 : nrow(e) - n, ]
+
+addedX10 = X[nrow(X) - n + 1 : nrow(X),  ]
+addedE10 = e[nrow(e) - n + 1 : nrow(e), ]
+
+
+X = oldX;
+e = oldE;
+sigma = ceil(0.15 * nrow(addedX1))
+
+start = time();
+[S,C,D] = slicefinder(X=X, e=e, k=10, alpha=0.95, minSup=sigma, tpBlksz=16, verbose=TRUE);
+end = time()
+
+timeTaken = (((end-start) / 1000000 - 1500))
+
+write(timeTaken, "results/Experiment2_timesSF1.dat", format="csv")
+
+X = rbind(X, addedX1);
+e = rbind(e, addedE1);
+sigma = ceil(0.15 * nrow(addedX1))
+
+start = time();
+[S,C,D] = slicefinder(X=X, e=e, k=10, alpha=0.95, minSup=sigma, tpBlksz=16, verbose=TRUE);
+end = time()
+
+timeTaken = (((end-start) / 1000000 - 1500))
+
+write(timeTaken, "results/Experiment2_timesSF2.dat", format="csv")
+
+X = rbind(X, addedX2);
+e = rbind(e, addedE2);
+sigma = ceil(0.15 * nrow(addedX1))
+
+start = time();
+[S,C,D] = slicefinder(X=X, e=e, k=10,  alpha=0.95, minSup=sigma, tpBlksz=16, verbose=TRUE);
+end = time()
+
+timeTaken = (((end-start) / 1000000 - 1500))
+
+write(timeTaken, "results/Experiment2_timesSF3.dat", format="csv")
+
+X = rbind(X, addedX3);
+e = rbind(e, addedE3);
+sigma = ceil(0.15 * nrow(addedX1))
+
+start = time();
+[S,C,D] = slicefinder(X=X, e=e, k=10,  alpha=0.95, minSup=sigma, tpBlksz=16, verbose=TRUE);
+end = time()
+
+timeTaken = (((end-start) / 1000000 - 1500))
+
+write(timeTaken, "results/Experiment2_timesSF4.dat", format="csv")
+
+X = rbind(X, addedX4);
+e = rbind(e, addedE4);
+sigma = ceil(0.15 * nrow(addedX1))
+
+start = time();
+[S,C,D] = slicefinder(X=X, e=e, k=10,  alpha=0.95, minSup=sigma, tpBlksz=16, verbose=TRUE);
+end = time()
+
+timeTaken = (((end-start) / 1000000 - 1500))
+
+write(timeTaken, "results/Experiment2_timesSF5.dat", format="csv")
+
+X = rbind(X, addedX5);
+e = rbind(e, addedE5);
+sigma = ceil(0.15 * nrow(addedX1))
+
+start = time();
+[S,C,D] = slicefinder(X=X, e=e, k=10,  alpha=0.95, minSup=sigma, tpBlksz=16, verbose=TRUE);
+end = time()
+
+timeTaken = (((end-start) / 1000000 - 1500))
+
+write(timeTaken, "results/Experiment2_timesSF6.dat", format="csv")
+
+X = rbind(X, addedX6);
+e = rbind(e, addedE6);
+sigma = ceil(0.15 * nrow(addedX1))
+
+start = time();
+[S,C,D] = slicefinder(X=X, e=e, k=10,  alpha=0.95, minSup=sigma, tpBlksz=16, verbose=TRUE);
+end = time()
+
+timeTaken = (((end-start) / 1000000 - 1500))
+
+write(timeTaken, "results/Experiment2_timesSF7.dat", format="csv")
+
+X = rbind(X, addedX7);
+e = rbind(e, addedE7);
+sigma = ceil(0.15 * nrow(addedX1))
+
+start = time();
+[S,C,D] = slicefinder(X=X, e=e, k=10,  alpha=0.95, minSup=sigma, tpBlksz=16, verbose=TRUE);
+end = time()
+
+timeTaken = (((end-start) / 1000000 - 1500))
+
+write(timeTaken, "results/Experiment2_timesSF8.dat", format="csv")
+
+X = rbind(X, addedX8);
+e = rbind(e, addedE8);
+sigma = ceil(0.15 * nrow(addedX1))
+
+start = time();
+[S,C,D] = slicefinder(X=X, e=e, k=10,  alpha=0.95, minSup=sigma, tpBlksz=16, verbose=TRUE);
+end = time()
+
+timeTaken = (((end-start) / 1000000 - 1500))
+
+write(timeTaken, "results/Experiment2_timesSF9.dat", format="csv")
+
+X = rbind(X, addedX9);
+e = rbind(e, addedE9);
+sigma = ceil(0.15 * nrow(addedX1))
+
+start = time();
+[S,C,D] = slicefinder(X=X, e=e, k=10,  alpha=0.95, minSup=sigma, tpBlksz=16, verbose=TRUE);
+end = time()
+
+timeTaken = (((end-start) / 1000000 - 1500))
+
+write(timeTaken, "results/Experiment2_timesSF10.dat", format="csv")
+
