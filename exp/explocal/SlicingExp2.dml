@@ -1,3 +1,7 @@
+# experiment 2 measures the execution time of the incremental slice line algorithm 
+# for 10 iterations with increasingly large input feature matrices 
+# the execution is also measured for the slicefinder algorithm for the same input matrices (see SlicingExp2b.dml)
+
 X = read($1);
 e = read($2);
 
@@ -6,37 +10,8 @@ X = X[, 1:8];
 n = ceil(nrow(X)/100);
 
 nrows = matrix(0, 10, 1);
-oldX = X[1:nrow(X) - n * 10 ,  1:8]
-addedX1 = X[nrow(X) - n*10 + 1 : nrow(X) - n*9,  ]
+oldX = X[1:nrow(X) - n * 10 ,  ]
 oldE = e[1:nrow(e) - n * 10 ,]
-addedE1 = e[nrow(e) - n *10 + 1 : nrow(e) - n*9, ]
-
-addedX2 = X[nrow(X) - n*9 + 1 : nrow(X) - n*8,  ]
-addedE2 = e[nrow(e) - n *9 + 1 : nrow(e) - n*8, ]
-
-addedX3 = X[nrow(X) - n*8 + 1 : nrow(X) - n*7,  ]
-addedE3 = e[nrow(e) - n *8 + 1 : nrow(e) - n*7, ]
-
-addedX4 = X[nrow(X) - n*7 + 1 : nrow(X) - n*6,  ]
-addedE4 = e[nrow(e) - n *7 + 1 : nrow(e) - n*6, ]
-
-addedX5 = X[nrow(X) - n*6 + 1 : nrow(X) - n*5,  ]
-addedE5 = e[nrow(e) - n *6 + 1 : nrow(e) - n*5, ]
-
-addedX6 = X[nrow(X) - n*5 + 1 : nrow(X) - n*4,  ]
-addedE6 = e[nrow(e) - n *5 + 1 : nrow(e) - n*4, ]
-
-addedX7 = X[nrow(X) - n*4 + 1 : nrow(X) - n*3,  ]
-addedE7 = e[nrow(e) - n *4 + 1 : nrow(e) - n*3, ]
-
-addedX8 = X[nrow(X) - n*3 + 1 : nrow(X) - n*2,  ]
-addedE8 = e[nrow(e) - n *3 + 1 : nrow(e) - n*2, ]
-
-addedX9 = X[nrow(X) - n*2 + 1 : nrow(X) - n,  ]
-addedE9 = e[nrow(e) - n *2 + 1 : nrow(e) - n, ]
-
-addedX10 = X[nrow(X) - n + 1 : nrow(X),  ]
-addedE10 = e[nrow(e) - n + 1 : nrow(e), ]
 
 nrows[1,1] = nrow(oldX)
 
@@ -46,104 +21,34 @@ for(i in 2:10) {
 
 write(nrows, "results/Experiment2_nrows.dat", format="csv")
 
+sigma = $3;
+timeTaken = 0;
+for(j in 1: 10){
+  start = time();
+  [TK, TKC, D, L, meta, Stats, Xout, eOut, foffb, foffe, params] = incSliceLine(addedX=oldX, addedE=oldE, k=10,
+    alpha=0.95, minSup=sigma, tpBlksz=16, verbose=TRUE, encodeLat = FALSE);
+  end = time()
 
-sigma = ceil(0.15 * nrow(addedX1))
+  timeTaken = timeTaken + (((end-start) / 1000000 - 1500))
 
-start = time();
-[TK, TKC, D, L, meta, Stats, Xout, eOut, foffb, foffe, params] = incSliceLine(addedX=oldX, addedE=oldE, k=10,
-  alpha=0.95, minSup=sigma, tpBlksz=16, verbose=TRUE, encodeLat = FALSE);
-end = time()
-
-timeTaken = (((end-start) / 1000000 - 1500))
-
+}
+timeTaken = timeTaken / 10;
 write(timeTaken, "results/Experiment2_times1.dat", format="csv")
 
-start = time();
-[TK2, TKC2, D2, L2, meta2, Stats2, Xout2, eOut2, foffb2, foffe2, params2] = incSliceLine(addedX=addedX1, oldX = Xout, oldE = eOut, addedE=addedE1, prevLattice = L, metaPrevLattice=meta, prevStats = Stats, prevTK = TK, prevTKC = TKC, k=10,
-  alpha=0.95, minSup=sigma, tpBlksz=16, verbose=TRUE, params=params, prevFoffb = foffb, prevFoffe = foffe, encodeLat = FALSE);
-end = time()
+for( i in 1: 10){
+  addedX = X[nrow(X) - n*(11-i) + 1 : nrow(X) - n*(10-i),  ]
+  addedE = e[nrow(e) - n *(11-i) + 1 : nrow(e) - n*(10-i), ]
+  timeTaken = 0;
+  for(j in 1: 10){
+    start = time();
+    [TK, TKC, D, L, meta, Stats, Xout, eOut, foffb, foffe, params] = incSliceLine(addedX=addedX, oldX = Xout, oldE = eOut, addedE=addedE, prevLattice = L, metaPrevLattice=meta, prevStats = Stats, prevTK = TK, prevTKC = TKC, k=10,
+      alpha=0.95, minSup=sigma, tpBlksz=16, verbose=TRUE, params=params, prevFoffb = foffb, prevFoffe = foffe, encodeLat = FALSE);
+    end = time()
 
-timeTaken = (((end-start) / 1000000 - 1500))
+    timeTaken =timeTaken + (((end-start) / 1000000 - 1500))
+  }
 
-write(timeTaken, "results/Experiment2_times2.dat", format="csv")
+  timeTaken = timeTaken / 10;
 
-start = time();
-[TK3, TKC3, D3, L3, meta3, Stats3, Xout3, eOut3, foffb3, foffe3, params3] = incSliceLine(addedX=addedX2, oldX = Xout2, oldE = eOut2, addedE=addedE2, prevLattice = L2, metaPrevLattice=meta2, prevStats = Stats2, prevTK = TK2, prevTKC = TKC2, k=10,
-  alpha=0.95, minSup=sigma, tpBlksz=16, verbose=TRUE, params=params2, prevFoffb = foffb2, prevFoffe = foffe2, encodeLat = FALSE);
-end = time()
-
-timeTaken = (((end-start) / 1000000 - 1500))
-
-write(timeTaken, "results/Experiment2_times3.dat", format="csv")
-
-start = time();
-[TK4, TKC4, D4, L4, meta4, Stats4, Xout4, eOut4, foffb4, foffe4, params4] = incSliceLine(addedX=addedX3, oldX = Xout3, oldE = eOut3, addedE=addedE3, prevLattice = L3, metaPrevLattice=meta3, prevStats = Stats3, prevTK = TK3, prevTKC = TKC3, k=10,
-  alpha=0.95, minSup=sigma, tpBlksz=16, verbose=TRUE, params=params3, prevFoffb = foffb3, prevFoffe = foffe3, encodeLat = FALSE);
-end = time()
-
-timeTaken = (((end-start) / 1000000 - 1500))
-
-write(timeTaken, "results/Experiment2_times4.dat", format="csv")
-
-start = time();
-[TK5, TKC5, D5, L5, meta5, Stats5, Xout5, eOut5, foffb5, foffe5, params5] = incSliceLine(addedX=addedX4, oldX = Xout4, oldE = eOut4, addedE=addedE4, prevLattice = L4, metaPrevLattice=meta4, prevStats = Stats4, prevTK = TK4, prevTKC = TKC4, k=10,
-  alpha=0.95, minSup=sigma, tpBlksz=16, verbose=TRUE, params=params4, prevFoffb = foffb4, prevFoffe = foffe4, encodeLat = FALSE);
-end = time()
-
-timeTaken = (((end-start) / 1000000 - 1500))
-
-write(timeTaken, "results/Experiment2_times5.dat", format="csv")
-
-start = time();
-[TK6, TKC6, D6, L6, meta6, Stats6, Xout6, eOut6, foffb6, foffe6, params6] = incSliceLine(addedX=addedX5, oldX = Xout5, oldE = eOut5, addedE=addedE5, prevLattice = L5, metaPrevLattice=meta5, prevStats = Stats5, prevTK = TK5, prevTKC = TKC5, k=10,
-  alpha=0.95, minSup=sigma, tpBlksz=16, verbose=TRUE, params=params5, prevFoffb = foffb5, prevFoffe = foffe5, encodeLat = FALSE);
-end = time()
-
-timeTaken = (((end-start) / 1000000 - 1500))
-
-write(timeTaken, "results/Experiment2_times6.dat", format="csv")
-
-start = time();
-[TK7, TKC7, D7, L7, meta7, Stats7, Xout7, eOut7, foffb7, foffe7, params7] = incSliceLine(addedX=addedX6, oldX = Xout6, oldE = eOut6, addedE=addedE6, prevLattice = L6, metaPrevLattice=meta6, prevStats = Stats6, prevTK = TK6, prevTKC = TKC6, k=10,
-  alpha=0.95, minSup=sigma, tpBlksz=16, verbose=TRUE, params=params6, prevFoffb = foffb6, prevFoffe = foffe6, encodeLat = FALSE);
-end = time()
-
-timeTaken = (((end-start) / 1000000 - 1500))
-
-write(timeTaken, "results/Experiment2_times7.dat", format="csv")
-
-start = time();
-[TK8, TKC8, D8, L8, meta8, Stats8, Xout8, eOut8, foffb8, foffe8, params8] = incSliceLine(addedX=addedX7, oldX = Xout7, oldE = eOut7, addedE=addedE7, prevLattice = L7, metaPrevLattice=meta7, prevStats = Stats7, prevTK = TK7, prevTKC = TKC7, k=10,
-  alpha=0.95, minSup=sigma, tpBlksz=16, verbose=TRUE, params=params7, prevFoffb = foffb7, prevFoffe = foffe7, encodeLat = FALSE);
-end = time()
-
-timeTaken = (((end-start) / 1000000 - 1500))
-
-write(timeTaken, "results/Experiment2_times7.dat", format="csv")
-
-start = time();
-[TK9, TKC9, D9, L9, meta9, Stats9, Xout9, eOut9, foffb9, foffe9, params9] = incSliceLine(addedX=addedX8, oldX = Xout8, oldE = eOut8, addedE=addedE8, prevLattice = L8, metaPrevLattice=meta8, prevStats = Stats8, prevTK = TK8, prevTKC = TKC8, k=10,
-  alpha=0.95, minSup=sigma, tpBlksz=16, verbose=TRUE, params=params8, prevFoffb = foffb8, prevFoffe = foffe8, encodeLat = FALSE);
-end = time()
-
-timeTaken = (((end-start) / 1000000 - 1500))
-
-write(timeTaken, "results/Experiment2_times8.dat", format="csv")
-
-start = time();
-[TK10, TKC10, D10, L10, meta10, Stats10, Xout10, eOut10, foffb10, foffe10, params10] = incSliceLine(addedX=addedX9, oldX = Xout9, oldE = eOut9, addedE=addedE9, prevLattice = L9, metaPrevLattice=meta9, prevStats = Stats9, prevTK = TK9, prevTKC = TKC9, k=10,
-  alpha=0.95, minSup=sigma, tpBlksz=16, verbose=TRUE, params=params9, prevFoffb = foffb9, prevFoffe = foffe9, encodeLat = FALSE);
-end = time()
-
-timeTaken = (((end-start) / 1000000 - 1500))
-
-write(timeTaken, "results/Experiment2_times9.dat", format="csv")
-
-start = time();
-[TK11, TKC11, D11, L11, meta11, Stats11, Xout11, eOut11, foffb11, foffe11, params11] = incSliceLine(addedX=addedX10, oldX = Xout10, oldE = eOut10, addedE=addedE10, prevLattice = L10, metaPrevLattice=meta10, prevStats = Stats10, prevTK = TK10, prevTKC = TKC10, k=10,
-  alpha=0.95, minSup=sigma, tpBlksz=16, verbose=TRUE, params=params10, prevFoffb = foffb10, prevFoffe = foffe10, encodeLat = FALSE);
-end = time()
-
-timeTaken = (((end-start) / 1000000 - 1500))
-
-write(timeTaken, "results/Experiment2_times10.dat", format="csv")
+  write(timeTaken, "results/Experiment2_times" +(i+1)+ ".dat", format="csv")
+}

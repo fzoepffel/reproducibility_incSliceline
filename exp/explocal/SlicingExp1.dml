@@ -1,0 +1,55 @@
+# experiment 2 measures the execution time of the incremental slice line algorithm 
+# for 10 iterations with increasingly large input feature matrices 
+# the execution is also measured for the slicefinder algorithm for the same input matrices (see SlicingExp2b.dml)
+
+X = read($1);
+e = read($2);
+
+X = X[, 1:8];
+
+nrows = matrix(0, 10, 1);
+sigma = $3;
+addition = floor(nrow(X) / 10);
+
+nrows[1,1] = 1;
+
+for(i in 2:10) {
+  nrows[i, 1] = as.scalar(nrows[i-1,1]) + addition;
+}
+
+write(nrows, "results/Experiment1_addedXSize.dat", format="csv");
+
+## TODO: n should increase logarithmically instead of linearly
+n = 1;
+i = 1;
+
+
+while(n < nrow(X)){
+    timeTaken = 0;
+    for(j in 1: 10){
+        oldX = X[1:nrow(X) - n,]
+        oldE = e[1:nrow(e) - n,]
+        addedX1 = X[nrow(X) - n + 1 : nrow(X), ]
+        addedE1 = e[nrow(e) - n + 1 : nrow(e), ]
+
+        [TK, TKC, D, L, meta, Stats, Xout, eOut, foffb, foffe, params] = incSliceLine(addedX=oldX, addedE=oldE, k=10,
+        alpha=0.95, minSup=sigma, tpBlksz=16, verbose=TRUE, encodeLat = FALSE);
+        
+        start = time();
+        [TK2, TKC2, D2, L2, meta2, Stats2, Xout2, eOut2, foffb2, foffe2, params2] = incSliceLine(addedX=addedX1, oldX = Xout, oldE = eOut, addedE=addedE1, prevLattice = L, metaPrevLattice=meta, prevStats = Stats, prevTK = TK, prevTKC = TKC, k=10,
+        alpha=0.95, minSup=sigma, tpBlksz=16, verbose=TRUE, params=params, prevFoffb = foffb, prevFoffe = foffe, encodeLat = FALSE);
+        end = time()
+
+        timeTaken = timeTaken + (((end-start) / 1000000 - 1500))
+    }
+
+
+    #filename = paste("results/Experiment1_times", i, ".dat", sep="")
+    timeTaken = timeTaken / 10;
+
+    write(timeTaken, "results/Experiment1_times" +i + ".dat", format="csv");
+    n = n + addition;
+    i = i + 1;
+}
+
+
