@@ -7,6 +7,9 @@ e = read($2);
 X = X[, 1:8];
 sigma = $3;
 
+totalSize = nrow(X);
+write(totalSize, "results/Experiment1_totalXSize.dat", format="csv");
+
 # compute logarithmically increasing x values for the number of rows
 start = 1;
 # to make sure that the last iteration still has enough data 
@@ -45,7 +48,7 @@ while(i < nrow(logarithmic_points)){
         alpha=0.95, minSup=sigma, tpBlksz=16, verbose=TRUE, params=params, prevFoffb = foffb, prevFoffe = foffe, encodeLat = FALSE);
         end = time()
 
-        timeTaken = timeTaken + (((end-start) / 1000000 - 1500))
+        timeTaken = timeTaken + (((end-start) / 1000000 -1500 ))
     }
 
     timeTaken = timeTaken / 10;

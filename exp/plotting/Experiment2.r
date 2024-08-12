@@ -4,12 +4,12 @@ require(Matrix)
 pdf(file="plots/Experiment2.pdf",
     width=3.7, height=4.0, family="serif", pointsize=14)
 
-data1 <- matrix(NA, nrow = 10, ncol = 2)
-for (i in 1:10) {
+data1 <- matrix(NA, nrow = 11, ncol = 2)
+for (i in 1:11) {
     file_name <- paste0("results/Experiment2_times", i, ".dat")
     data1[i, 1] <- as.matrix(scan(file_name))[, 1]
 }
-for (i in 1:10) {
+for (i in 1:11) {
     file_name <- paste0("results/Experiment2_timesSF", i, ".dat")
     data1[i, 2] <- as.matrix(scan(file_name))[, 1]
 }
@@ -26,7 +26,7 @@ points <- seq(1, 10)
 plot_colors <- c("cornflowerblue","gray40","black","orange","orangered")
 
 # Plot the first column of data
-plot(points, data[, 1],  
+plot(points, data[2:11, 1],  
     type="o",           
     pch=19, 
     cex=1.1,
@@ -41,10 +41,10 @@ plot(points, data[, 1],
     ylim = c(0.1, 100))
 
 # Add the second column of data
-lines(points, data[, 2], type = "o", col = plot_colors[2], lty = 2, pch = 19)
+lines(points, data[2:11, 2], type = "o", col = plot_colors[2], lty = 2, pch = 19)
 
-axis(2, las=2, at=c(0.1, 0.5, 1, 5, 10), labels=c("0.1","0.5", "1", "5", "10")) # horizontal y axis
-axis(1, las=1, at=points, labels=x_labels) # vertical x axis
+axis(2, las=2, at=c(0.1, 0.5, 1, 2, 5, 10), labels=c("0.1","0.5", "1", "2", "5", "10")) # horizontal y axis
+axis(1, las=1, at=points, labels=x_labels[2:11]) # vertical x axis
 mtext(2, text="Execution time (s)",line=2.7) 
 mtext(1, text="Size Feature Mat. ((# rows)/1000)",line=2) 
 

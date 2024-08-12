@@ -17,12 +17,16 @@ for (i in 1:10) {
 data <- as.matrix(data1 / 1000)
 
 # read the x-axis tick labels from file
-x_labels <- scan("results/Experiment1_addedXSize.dat");
-x_labels = x_labels/1000;
-# reduce the number of digits after the decimal point
-x_labels <- round(x_labels, 1)
+addedXSizes <- scan("results/Experiment1_addedXSize.dat");
+totalSize <- scan("results/Experiment1_totalXSize.dat");
 
-points <- x_labels
+proportions <- round(addedXSizes/totalSize * 100,1)
+
+addedXSizes = addedXSizes/1000;
+# reduce the number of digits after the decimal point
+addedXSizes <- round(addedXSizes, 1)
+
+points <- addedXSizes
 plot_colors <- c("cornflowerblue","gray40","black","orange","orangered")
 
 # Plot the first column of data
@@ -43,10 +47,10 @@ plot(points, data[, 1],
 # Add the second column of data
 lines(points, data[, 2], type = "o", col = plot_colors[2], lty = 2, pch = 19)
 
-axis(2, las=2, at=c(0.1, 0.5, 1, 5, 10), labels=c("0.1","0.5", "1", "5", "10")) # horizontal y axis
-axis(1, las=1, at=x_labels, labels=x_labels) # vertical x axis
+axis(2, las=2, at=c(0.1, 0.5, 1, 5, 10), labels=c("0.1","0.5", "1", "5", "10"), cex.axis=0.8) # horizontal y axis
+axis(1, las=1, at=addedXSizes, labels=proportions, cex.axis=0.8) # vertical x axis
 mtext(2, text="Execution time (s)",line=2.7) 
-mtext(1, text="Size AddedX Mat. ((# rows)/1000)",line=2) 
+mtext(1, text="| addedX | / | totalX | (in %)",line=2) 
 
 # Add a legend
 legend("topright", legend = c("IncSliceLine", "SliceLine"), 

@@ -18,7 +18,7 @@ for(j in 1: 10){
     [S,C,D] = slicefinder(X=X, e=e, k=10, alpha=0.95, minSup=sigma, tpBlksz=16, verbose=TRUE);
     end = time()
 
-    timeTaken = timeTaken + (((end-start) / 1000000 - 1500));
+    timeTaken = timeTaken + (((end-start) / 1000000 -1500 ));
 }
 
 timeTaken = timeTaken / 10;

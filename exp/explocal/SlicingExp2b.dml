@@ -1,5 +1,6 @@
 # experiment 2 measures the execution time of the incremental slice line algorithm 
-# for 10 iterations with increasingly large input feature matrices  (see SlicingExp2.dml)
+# for 10 iterations with increasingly large input feature matrices 
+# while keeping the proportion of addedX/totalX the same over all iterations  (see SlicingExp2.dml)
 # the execution is also measured for the slicefinder algorithm for the same input matrices (see SlicingExp2b.dml)
 
 X = read($1);
@@ -9,15 +10,17 @@ X = X[, 1:8];
 
 n = ceil(nrow(X)/100);
 
-oldX = X[1:nrow(X) - n * 10 ,  1:8]
-oldE = e[1:nrow(e) - n * 10 ,]
+nTotalRows = nrow(X);
+proportion = 0.03;
+decrease = 1 - proportion;
+oldX = X[1:floor(nTotalRows * (decrease^10)) ,  ]
+oldE = e[1:floor(nTotalRows * (decrease^10)) ,] 
 
 X2 = oldX;
 e2 = oldE;
 sigma = $3;
 
-
-for( i in 1: 10){
+for( i in 1: 11){
     addedX = matrix(0, 0, 8)
     addedE = matrix(0, 0, 1)
     X2 = rbind(X2, addedX);
@@ -29,12 +32,12 @@ for( i in 1: 10){
         [S,C,D] = slicefinder(X=X2, e=e2, k=10, alpha=0.95, minSup=sigma, tpBlksz=16, verbose=TRUE);
         end = time()
 
-        timeTaken = timeTaken + (((end-start) / 1000000 - 1500));
+        timeTaken = timeTaken + (((end-start) / 1000000 -1500 ));
     }
 
     timeTaken = timeTaken / 10;
     write(timeTaken, "results/Experiment2_timesSF"+i+".dat", format="csv")
-    addedX = X[nrow(X) - n*(11-i) + 1 : nrow(X) - n*(10-i),  ]
-    addedE = e[nrow(e) - n *(11-i) + 1 : nrow(e) - n*(10-i), ]
+    addedX = X[floor(nTotalRows * (decrease ^ (11 -i))) +1 : floor(nTotalRows * (decrease ^ (10 -i))),  ]
+    addedE = e[floor(nTotalRows * (decrease ^ (11 -i))) +1 : floor(nTotalRows * (decrease ^ (10 -i))), ]
 }
 
