@@ -4,46 +4,32 @@
 
 X = read($1);
 e = read($2);
-
 X = X[, 1:8];
-
-nrows = matrix(0, 10, 1);
 sigma = $3;
 
-
-# Define start, end, and number of points
+# compute logarithmically increasing x values for the number of rows
 start = 1;
-end = nrow(X) -1;
+# to make sure that the last iteration still has enough data 
+# so not all basic slices fall under the minSup we use 5*sigma
+end = nrow(X) -(5*sigma);
 num_points = 10;
-
-# Calculate the logarithms of the start and end points
 log_start = log(start);
 log_end = log(end);
-
-# Calculate the increment in the logarithmic space
 log_increment = (log_end - log_start) / (num_points - 1);
-
-# Generate logarithmically spaced points
 logarithmic_points = matrix(0, num_points, 1);
 for (i in 1:num_points) {
     log_value = log_start + (i-1) * log_increment;
     logarithmic_points[i,1] = floor(exp(log_value));
 }
 
-addition = floor(nrow(X) / 10);
-
-nrows = logarithmic_points;
-
-write(nrows, "results/Experiment1_addedXSize.dat", format="csv");
-
-
-
+# write the logarithmic points to a file for the plot's x-axis
+write(logarithmic_points, "results/Experiment1_addedXSize.dat", format="csv");
 
 n = as.scalar(logarithmic_points[1,1]);
 i = 1;
 
-
-while(n < nrow(X)){
+# iterate over increasingly large addedX matrices and measure the execution time
+while(i < nrow(logarithmic_points)){
     timeTaken = 0;
     for(j in 1: 10){
         oldX = X[1:nrow(X) - n,]
@@ -62,13 +48,9 @@ while(n < nrow(X)){
         timeTaken = timeTaken + (((end-start) / 1000000 - 1500))
     }
 
-
-    #filename = paste("results/Experiment1_times", i, ".dat", sep="")
     timeTaken = timeTaken / 10;
 
     write(timeTaken, "results/Experiment1_times" +i + ".dat", format="csv");
     n = as.scalar(logarithmic_points[i+1, 1]);
     i = i + 1;
 }
-
-
