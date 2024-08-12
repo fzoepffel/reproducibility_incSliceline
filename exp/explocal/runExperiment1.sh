@@ -1,9 +1,8 @@
 #!/bin/bash
 
-
-# experiment 2 measures the execution time of the incremental slice line algorithm 
-# for 10 iterations with increasingly large input feature matrices  (see SlicingExp2.dml)
-# the execution is also measured for the slicefinder algorithm for the same input matrices (see SlicingExp2b.dml)
+# experiment 1 measures the execution time of the incremental slice line algorithm 
+# for 10 iterations with increasingly large proportion of addedX/totalX (see SlicingExp1.dml)
+# the values are compared with the execution time of SliceFinder for the totalX (see SlicingExp1b.dml)
 
 CMD="java -Xmx600g -Xms600g -cp ./lib/*:./SystemDS.jar org.apache.sysds.api.DMLScript "
 SIGMA="50"

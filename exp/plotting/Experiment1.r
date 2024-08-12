@@ -34,7 +34,9 @@ plot(points, data[, 1],
     type="o",           
     pch=19, 
     cex=1.1,
-    col=plot_colors[1],                
+    col=plot_colors[1],    
+    main="Increasing Proportion of Added X, Same Total Size",
+    cex.main=0.7,          
     xlab="",     
     ylab="",         
     axes=FALSE,    
@@ -47,14 +49,14 @@ plot(points, data[, 1],
 # Add the second column of data
 lines(points, data[, 2], type = "o", col = plot_colors[2], lty = 2, pch = 19)
 
-axis(2, las=2, at=c(0.1, 0.5, 1, 5, 10), labels=c("0.1","0.5", "1", "5", "10"), cex.axis=0.8) # horizontal y axis
-axis(1, las=1, at=addedXSizes, labels=proportions, cex.axis=0.8) # vertical x axis
-mtext(2, text="Execution time (s)",line=2.7) 
-mtext(1, text="| addedX | / | totalX | (in %)",line=2) 
+axis(2, las=2, at=c(0.1, 0.5, 1, 5, 10), labels=c("0.1","0.5", "1", "5", "10"), cex.axis=0.7) # horizontal y axis
+axis(1, las=1, at=addedXSizes, labels=proportions, cex.axis=0.7) # vertical x axis
+mtext(2, text="Execution time (s)",line=2.7, cex=0.7) 
+mtext(1, text="| addedX | / | totalX | (in %)",line=2, cex=0.7) 
 
 # Add a legend
 legend("topright", legend = c("IncSliceLine", "SliceLine"), 
-       col = plot_colors[1:2], lty = 1:2, pch = 19)
+       col = plot_colors[1:2], lty = 1:2, pch = 19, cex=0.7)
 
 box()	              # box around plot       
 dev.off() 

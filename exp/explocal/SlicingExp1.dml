@@ -1,6 +1,6 @@
-# experiment 2 measures the execution time of the incremental slice line algorithm 
-# for 10 iterations with increasingly large input feature matrices 
-# the execution is also measured for the slicefinder algorithm for the same input matrices (see SlicingExp2b.dml)
+# experiment 1 measures the execution time of the incremental slice line algorithm 
+# for 10 iterations with increasingly large proportion of addedX/totalX
+# the values are compared with the execution time of SliceFinder for the totalX (see SlicingExp1b.dml)
 
 X = read($1);
 e = read($2);
