@@ -52,7 +52,8 @@ lines(points, data[, 2], type = "o", col = plot_colors[2], lty = 2, pch = 19)
 axis(2, las=2, at=c(0.1, 0.5, 1, 5, 10), labels=c("0.1","0.5", "1", "5", "10"), cex.axis=0.7) # horizontal y axis
 axis(1, las=1, at=addedXSizes, labels=proportions, cex.axis=0.7) # vertical x axis
 mtext(2, text="Execution time (s)",line=2.7, cex=0.7) 
-mtext(1, text="| addedX | / | totalX | (in %)",line=2, cex=0.7) 
+mtext(1,text=expression(paste(frac(abs(italic(" addedX ")), abs(italic(" totalX "))), "  (in %)")) ,line=3, cex=0.65) 
+text(x = 0.3, y = 40, labels = bquote(paste(abs(italic(" totalX "))," = ", .(totalSize))), cex = 0.5)
 
 # Add a legend
 legend("topright", legend = c("IncSliceLine", "SliceLine"), 

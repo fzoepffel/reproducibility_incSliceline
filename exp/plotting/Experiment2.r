@@ -50,6 +50,8 @@ axis(1, las=1, at=points, labels=x_labels[2:11], cex.axis=0.7) # vertical x axis
 mtext(2, text="Execution time (s)",line=2.7, cex=0.7) 
 mtext(1, text="Size Feature Mat. ((# rows)/1000)",line=2, cex=0.7) 
 
+text(x = 2.8, y = 35, labels = expression(paste(frac(abs(italic(" addedX ")), abs(italic(" totalX "))), " = 0.03")), cex = 0.5)
+
 # Add a legend
 legend("topright", legend = c("IncSliceLine", "SliceLine"), 
        col = plot_colors[1:2], lty = 1:2, pch = 19, cex=0.7)

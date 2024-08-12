@@ -1,0 +1,14 @@
+# experiment 2 measures the execution time of the incremental slice line algorithm 
+# for 10 iterations with increasingly large input feature matrices 
+# while keeping the proportion of addedX/totalX the same over all iterations
+# the execution is also measured for the slicefinder algorithm for the same input matrices (see SlicingExp2b.dml)
+
+X = read($1);
+e = read($2);
+
+X = X[, 1:8];
+sigma = $3;
+
+[S,C,D] = slicefinder(X=X, e=e, k=10, alpha=0.95, minSup=sigma, tpBlksz=16, verbose=TRUE);
+
+write(D, "results/Experiment3SF_D.dat", format="csv")
