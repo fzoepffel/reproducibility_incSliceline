@@ -5,24 +5,27 @@
 
 X = read($1);
 e = read($2);
+sigma = $3;
+iteration = $4;
 
 X = X[, 1:8];
 
-n = ceil(nrow(X)/100);
+numOfPoints = 10;
 
 nTotalRows = nrow(X);
 proportion = 0.03;
 decrease = 1 - proportion;
-oldX = X[1:floor(nTotalRows * (decrease^10)) ,  ]
-oldE = e[1:floor(nTotalRows * (decrease^10)) ,] 
+nTotalRows = nrow(X) * (decrease^(numOfPoints*(10-iteration)));
+oldX = X[1:floor(nTotalRows * (decrease^numOfPoints)) ,  ]
+oldE = e[1:floor(nTotalRows * (decrease^numOfPoints)) ,] 
 
 X2 = oldX;
 e2 = oldE;
-sigma = $3;
 
-for( i in 1: 11){
-    addedX = matrix(0, 0, 8)
-    addedE = matrix(0, 0, 1)
+for( i in 1: (numOfPoints)){
+    addedX = X[floor(nTotalRows * (decrease ^ ((numOfPoints +1) -i))) +1 : floor(nTotalRows * (decrease ^ (numOfPoints -i))),  ]
+    addedE = e[floor(nTotalRows * (decrease ^ ((numOfPoints +1) -i))) +1 : floor(nTotalRows * (decrease ^ (numOfPoints -i))), ]
+
     X2 = rbind(X2, addedX);
     e2 = rbind(e2, addedE);
 
@@ -32,12 +35,10 @@ for( i in 1: 11){
         [S,C,D] = slicefinder(X=X2, e=e2, k=10, alpha=0.95, minSup=sigma, tpBlksz=16, verbose=TRUE);
         end = time()
 
-        timeTaken = timeTaken + (((end-start) / 1000000 -1500 ));
+        timeTaken = timeTaken + (((end-start) / 1000000  ));
     }
 
     timeTaken = timeTaken / 10;
-    write(timeTaken, "results/Experiment2_timesSF"+i+".dat", format="csv")
-    addedX = X[floor(nTotalRows * (decrease ^ (11 -i))) +1 : floor(nTotalRows * (decrease ^ (10 -i))),  ]
-    addedE = e[floor(nTotalRows * (decrease ^ (11 -i))) +1 : floor(nTotalRows * (decrease ^ (10 -i))), ]
+    write(timeTaken, "results/Experiment2_timesSF"+(numOfPoints*iteration + i)+".dat", format="csv")
 }
 
