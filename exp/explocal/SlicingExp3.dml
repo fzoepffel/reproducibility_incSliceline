@@ -6,22 +6,31 @@ e = read($2);
 X = X[, 1:8];
 
 nTotalRows = nrow(X);
-proportion = 0.03;
-decrease = 1 - proportion;
+proportionList = list(0.01, 0.03, 0.09, 0.30, 0.99);
 
-oldX = X[1:floor(nTotalRows * decrease) ,  ]
-oldE = e[1:floor(nTotalRows * decrease) ,] 
+for(i in 1:5){
+    proportion = as.scalar(proportionList[i]);
+    decrease = 1 - proportion;
 
-sigma = $3;
+    oldX = X[1:floor(nTotalRows * decrease) ,  ]
+    oldE = e[1:floor(nTotalRows * decrease) ,] 
 
-[TK, TKC, D, L, meta, Stats, Xout, eOut, foffb, foffe, params] = incSliceLine(addedX=oldX, addedE=oldE, k=10,
-    alpha=0.95, minSup=sigma, tpBlksz=16, verbose=TRUE, encodeLat = FALSE);
+    sigma = $3;
 
-addedX = X[floor(nTotalRows * decrease) +1 : nTotalRows,  ]
-addedE = e[floor(nTotalRows * decrease) +1 : nTotalRows, ]
+    [TK, TKC, D, L, meta, Stats, Xout, eOut, foffb, foffe, params] = incSliceLine(addedX=oldX, addedE=oldE, k=10,
+        alpha=0.95, minSup=sigma, tpBlksz=16, verbose=TRUE, encodeLat = FALSE);
 
-[TK, TKC, D, L, meta, Stats, Xout, eOut, foffb, foffe, params] = incSliceLine(addedX=addedX, oldX = oldX, oldE = oldE, addedE=addedE, prevLattice = L, metaPrevLattice=meta, prevStats = Stats, prevTK = TK, prevTKC = TKC, k=10,
-    alpha=0.95, minSup=sigma, tpBlksz=16, verbose=TRUE, params=params, prevFoffb = foffb, prevFoffe = foffe, encodeLat = FALSE);
+    addedX = X[floor(nTotalRows * decrease) +1 : nTotalRows,  ]
+    addedE = e[floor(nTotalRows * decrease) +1 : nTotalRows, ]
 
-write(D, "results/Experiment3_D.dat", format="csv")
+    print("proportion: " + proportion);
+    print("nrow(addedX): " + nrow(addedX));
+    print("nrow(oldX): " + nrow(oldX));
+
+    [TK, TKC, D, L, meta, Stats, Xout, eOut, foffb, foffe, params] = incSliceLine(addedX=addedX, oldX = oldX, oldE = oldE, addedE=addedE, prevLattice = L, metaPrevLattice=meta, prevStats = Stats, prevTK = TK, prevTKC = TKC, k=10,
+        alpha=0.95, minSup=sigma, tpBlksz=16, verbose=TRUE, params=params, prevFoffb = foffb, prevFoffe = foffe, encodeLat = FALSE);
+
+    write(D, "results/Experiment3_D"+i+".dat", format="csv")
+}
+
 

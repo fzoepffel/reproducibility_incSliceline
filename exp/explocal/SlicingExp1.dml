@@ -28,11 +28,11 @@ for (i in 1:num_points) {
 # write the logarithmic points to a file for the plot's x-axis
 write(logarithmic_points, "results/Experiment1_addedXSize.dat", format="csv");
 
-n = as.scalar(logarithmic_points[1,1]);
 i = 1;
 
 # iterate over increasingly large addedX matrices and measure the execution time
-while(i < nrow(logarithmic_points)){
+while(i <= nrow(logarithmic_points)){
+    n = as.scalar(logarithmic_points[i, 1]);
     timeTaken = 0;
     for(j in 1: 10){
         oldX = X[1:nrow(X) - n,]
@@ -50,10 +50,11 @@ while(i < nrow(logarithmic_points)){
 
         timeTaken = timeTaken + (((end-start) / 1000000 -1500 ))
     }
-
+    proportion = nrow(addedX1)/ nrow(X);
+    write(proportion, "results/Experiment1_proportions" +i + ".dat", format="csv");
     timeTaken = timeTaken / 10;
 
     write(timeTaken, "results/Experiment1_times" +i + ".dat", format="csv");
-    n = as.scalar(logarithmic_points[i+1, 1]);
+    
     i = i + 1;
 }

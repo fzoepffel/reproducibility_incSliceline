@@ -3,7 +3,7 @@ require(Matrix)
 
 numOfPoints <- 100
 
-pdf(file="plots/Experiment2.pdf",
+pdf(file="plots/Experiment2c.pdf",
     width=3.7, height=4.0, family="serif", pointsize=14)
 
 data1 <- matrix(NA, nrow = (numOfPoints), ncol = 2)
@@ -35,16 +35,16 @@ plot_colors <- c("cornflowerblue","gray40","black","orange","orangered")
 
 # remove the 11th, 21st, 31st, ..., 91st row from data and points 
 # as these are slower as they are the first runs of the experiments
-data <- data[-seq(1, 91, 10),]
-points <- points[-seq(1, 91, 10)]
+#data <- data[-seq(1, 91, 10),]
+#points <- points[-seq(1, 91, 10)]
 
-lastX <- 20;
+lastX <- 10;
 
 # only keep the 
 
 # Plot the first column of data
 plot(tail(points, lastX), tail(data[, 1], lastX),  
-    main="Increasing Size of Feature Matrix, Same Proportions",
+    main="10x Increasing Input Size, Same Proportions",
     cex.main=0.7,    
     type="o",           
     pch=19, 
@@ -70,7 +70,7 @@ axis(1, las=1, at=lastXPoints[seq(1, length(lastXPoints), by=ceiling(length(last
 mtext(2, text="Execution time (s)",line=2.7, cex=0.7) 
 mtext(1, text="Size Feature Mat. ((# rows)/1000)",line=2, cex=0.7) 
 
-text(x = lastXPoints[4] , y = 35, labels = expression(paste(frac(abs(italic(" addedX ")), abs(italic(" totalX "))), " = 0.03")), cex = 0.5)
+text(x = lastXPoints[floor(length(lastXPoints)/3)] , y = 35, labels = expression(paste(frac(abs(italic(" addedX ")), abs(italic(" totalX "))), " = 0.03")), cex = 0.5)
 
 # Add a legend
 legend("topright", legend = c("IncSliceLine", "SliceLine"), 
