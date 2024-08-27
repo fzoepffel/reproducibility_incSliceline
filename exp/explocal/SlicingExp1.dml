@@ -11,38 +11,48 @@ totalSize = nrow(X);
 write(totalSize, "results/Experiment1_totalXSize.dat", format="csv");
 
 # compute logarithmically increasing x values for the number of rows
-start = 1;
+start = 5*sigma;
 # to make sure that the last iteration still has enough data 
 # so not all basic slices fall under the minSup we use 5*sigma
-end = nrow(X) -(5*sigma);
-num_points = 10;
+end = (nrow(X) -(5*sigma))/2;
+num_points = 20;
 log_start = log(start);
 log_end = log(end);
-log_increment = (log_end - log_start) / (num_points - 1);
+log_increment = (log_end - log_start) / (num_points/2 - 1);
 logarithmic_points = matrix(0, num_points, 1);
-for (i in 1:num_points) {
+for (i in 1:num_points/2) {
     log_value = log_start + (i-1) * log_increment;
     logarithmic_points[i,1] = floor(exp(log_value));
 }
+for (i in 1:num_points/2) {
+    if(i < num_points/2){
+        difference = logarithmic_points[num_points/2 - i +1, 1] - logarithmic_points[num_points/2 - i, 1];
+    } else {
+        difference = logarithmic_points[1,1];
+    }
+    logarithmic_points[num_points/2 + i, 1] = logarithmic_points[num_points/2 + i - 1, 1] + difference;
+}
 
-# write the logarithmic points to a file for the plot's x-axis
-write(logarithmic_points, "results/Experiment1_addedXSize.dat", format="csv");
+print(toString(logarithmic_points));
 
 i = 1;
+addedXSize = matrix(0, num_points, 1);
 
 # iterate over increasingly large addedX matrices and measure the execution time
 while(i <= nrow(logarithmic_points)){
     n = as.scalar(logarithmic_points[i, 1]);
+    oldX = X[1:nrow(X) - n,]
+    oldE = e[1:nrow(e) - n,]
+    addedX1 = X[nrow(X) - n + 1 : nrow(X), ]
+    addedE1 = e[nrow(e) - n + 1 : nrow(e), ]
+    addedXSize[i, 1] = nrow(addedX1);
+
+    [TK, TKC, D, L, meta, Stats, Xout, eOut, foffb, foffe, params] = incSliceLine(addedX=oldX, addedE=oldE, k=10,
+        alpha=0.95, minSup=sigma, tpBlksz=16, verbose=TRUE, encodeLat = FALSE);
+
     timeTaken = 0;
     for(j in 1: 10){
-        oldX = X[1:nrow(X) - n,]
-        oldE = e[1:nrow(e) - n,]
-        addedX1 = X[nrow(X) - n + 1 : nrow(X), ]
-        addedE1 = e[nrow(e) - n + 1 : nrow(e), ]
 
-        [TK, TKC, D, L, meta, Stats, Xout, eOut, foffb, foffe, params] = incSliceLine(addedX=oldX, addedE=oldE, k=10,
-        alpha=0.95, minSup=sigma, tpBlksz=16, verbose=TRUE, encodeLat = FALSE);
-        
         start = time();
         [TK2, TKC2, D2, L2, meta2, Stats2, Xout2, eOut2, foffb2, foffe2, params2] = incSliceLine(addedX=addedX1, oldX = Xout, oldE = eOut, addedE=addedE1, prevLattice = L, metaPrevLattice=meta, prevStats = Stats, prevTK = TK, prevTKC = TKC, k=10,
         alpha=0.95, minSup=sigma, tpBlksz=16, verbose=TRUE, params=params, prevFoffb = foffb, prevFoffe = foffe, encodeLat = FALSE);
@@ -58,3 +68,6 @@ while(i <= nrow(logarithmic_points)){
     
     i = i + 1;
 }
+
+# write the logarithmic points to a file for the plot's x-axis
+write(addedXSize, "results/Experiment1_addedXSize.dat", format="csv");

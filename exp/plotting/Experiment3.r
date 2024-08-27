@@ -1,8 +1,9 @@
 require(graphics)
 require(Matrix)
 
+proportions <- c(0.01, 0.03, 0.09, 0.30, 0.50, 0.99)
 
-for( i in 1:5){
+for( i in 1:6){
   file_name1 <- paste0("plots/Experiment3_", i, ".pdf")
   pdf(file=file_name1,
     width=4.5, height=4.0, family="serif", pointsize=14)
@@ -15,12 +16,16 @@ for( i in 1:5){
 
   plot_colors <- c("cornflowerblue","#B0C4DE","#ED9464","#FFDAB9")
 
+  prop <- proportions[i]
+
   print(ncol(data1))
 
   par(mgp = c(3, 0.5, 0))  # Second value (0.5) controls the position of the labels
 
+  title <- paste0("Evaluated and Valid Slices, Proportion = ", prop)
+
   barplot( data1, 
-          main = "Evaluated and Valid Slices in SliceFinder and incSliceLine",
+          main = title,
           cex.main = 0.7,
           space = c(0, 0.3),
           xlab = "", 
@@ -39,7 +44,8 @@ for( i in 1:5){
   mtext(2,text="# Enumerated Slices",line=2, cex=0.7) 
   mtext(1,text="Lattice Level L",line=1.5, cex=0.7) 
 
-  text(x = 30, y = 2400, labels = expression(paste(frac(abs(italic(" addedX ")), abs(italic(" totalX "))), " = 0.03")), cex = 0.5)
+  # add prop to the paste in expression
+  text(x = 30, y = 2400, labels = bquote(paste(frac(abs(italic(" addedX ")), abs(italic(" totalX "))), " = ", .(prop))), cex = 0.5)
   text(x = 30, y = 1600, labels = expression(paste(abs(italic(" totalX ")), " = 32.6k")), cex = 0.5)
 
   # Add a legend
