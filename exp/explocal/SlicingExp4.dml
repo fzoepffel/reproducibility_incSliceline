@@ -31,7 +31,36 @@ X = X[, 1:8];
 numOfPoints = 10;
 nrows = matrix(0, numOfPoints, 1);
 
-proportion = 0.01;
+proportion = 0;
+propStr = 0;
+
+propVal = $7;
+
+if(propVal == 1){
+    proportion = 0.01;
+    propStr = 1;
+}
+
+if(propVal == 2){
+    proportion = 0.1;
+    propStr = 10;
+}
+
+if(propVal == 3){
+    proportion = 0.3;
+    propStr = 50;
+}
+
+if(propVal == 4){
+    proportion = 0.9;
+    propStr = 90;
+}
+
+if(propVal == 5){
+    proportion = 0.98;
+    propStr = 98;
+}
+
 decrease = 1 - proportion;
 nTotalRows = nrow(X) * (decrease^(numOfPoints*(10-iteration)));
 
@@ -81,5 +110,5 @@ for( i in 1: numOfPoints){
 
     timeTaken = timeTaken / 10;
 
-    write(timeTaken, "results/Experiment4_times_"+ str +(numOfPoints*iteration +i)+ ".dat", format="csv")
+    write(timeTaken, "results/Experiment4_times_"+ str + "_Prop"+ propStr + "_" +(numOfPoints*iteration +i)+ ".dat", format="csv")
 }

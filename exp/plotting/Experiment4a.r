@@ -4,28 +4,30 @@ require(Matrix)
 numOfPoints <- 100
 lastX <- 20;
 
-pdf(file="plots/Experiment4.pdf",
+
+
+pdf(file="plots/Experiment4_Prop1.pdf",
     width=3.7, height=4.0, family="serif", pointsize=14)
 
 data1 <- matrix(NA, nrow = (numOfPoints), ncol = 5)
 for (i in (numOfPoints - lastX +1):(numOfPoints)) {
-    file_name <- paste0("results/Experiment4_times_BothDisabled", (i +10), ".dat")
+    file_name <- paste0("results/Experiment4_times_BothDisabled_Prop1_", (i +10), ".dat")
     data1[i, 1] <- as.matrix(scan(file_name))[, 1]
 }
 for (i in (numOfPoints - lastX +1):(numOfPoints)) {
-    file_name <- paste0("results/Experiment4_times_NoneDisabled", (i +10), ".dat")
+    file_name <- paste0("results/Experiment4_times_NoneDisabled_Prop1_", (i +10), ".dat")
     data1[i, 2] <- as.matrix(scan(file_name))[, 1]
 }
 for (i in (numOfPoints - lastX +1):(numOfPoints)) {
-    file_name <- paste0("results/Experiment4_times_ScoreDisabled", (i +10), ".dat")
+    file_name <- paste0("results/Experiment4_times_ScoreDisabled_Prop1_", (i +10), ".dat")
     data1[i, 3] <- as.matrix(scan(file_name))[, 1]
 }
 for (i in (numOfPoints - lastX +1):(numOfPoints)) {
-    file_name <- paste0("results/Experiment4_times_SliceDisabled", (i +10), ".dat")
+    file_name <- paste0("results/Experiment4_times_SliceDisabled_Prop1_", (i +10), ".dat")
     data1[i, 4] <- as.matrix(scan(file_name))[, 1]
 }
 for (i in (numOfPoints - lastX +1):(numOfPoints)) {
-    file_name <- paste0("results/Experiment4_timesSF", (i +10), ".dat")
+    file_name <- paste0("results/Experiment4_timesSF_Prop1_", (i +10), ".dat")
     data1[i, 5] <- as.matrix(scan(file_name))[, 1]
 }
 

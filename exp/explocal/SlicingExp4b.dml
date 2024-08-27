@@ -13,7 +13,27 @@ X = X[, 1:8];
 numOfPoints = 10;
 
 nTotalRows = nrow(X);
-proportion = 0.03;
+
+proportion = 0;
+propStr = 0;
+
+propVal = $5;
+
+if(propVal == 1){
+    proportion = 0.01;
+    propStr = 1;
+}
+
+if(propVal == 2){
+    proportion = 0.1;
+    propStr = 10;
+}
+
+if(propVal == 3){
+    proportion = 0.3;
+    propStr = 50;
+}
+
 decrease = 1 - proportion;
 nTotalRows = nrow(X) * (decrease^(numOfPoints*(10-iteration)));
 oldX = X[1:floor(nTotalRows * (decrease^numOfPoints)) ,  ]
@@ -43,6 +63,6 @@ for( i in 1: (numOfPoints)){
     }
 
     timeTaken = timeTaken / 10;
-    write(timeTaken, "results/Experiment4_timesSF"+(numOfPoints*iteration + i)+".dat", format="csv")
+    write(timeTaken, "results/Experiment4_timesSF"+ "_Prop"+ propStr+ "_" + (numOfPoints*iteration + i)+".dat", format="csv")
 }
 
