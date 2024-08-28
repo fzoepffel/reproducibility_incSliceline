@@ -2,7 +2,7 @@
 # for 10 iterations with increasingly large input feature matrices 
 # while keeping the proportion of addedX/totalX the same over all iterations  (see SlicingExp2.dml)
 # the execution is also measured for the slicefinder algorithm for the same input matrices (see SlicingExp2b.dml)
-
+/*
 X = read($1);
 e = read($2);
 sigma = $3;
@@ -66,3 +66,4 @@ for( i in 1: (numOfPoints)){
     write(timeTaken, "results/Experiment4_timesSF"+ "_Prop"+ propStr+ "_" + (numOfPoints*iteration + i)+".dat", format="csv")
 }
 
+*/

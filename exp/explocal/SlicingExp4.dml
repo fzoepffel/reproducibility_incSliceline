@@ -48,7 +48,7 @@ if(propVal == 2){
 
 if(propVal == 3){
     proportion = 0.3;
-    propStr = 50;
+    propStr = 30;
 }
 
 if(propVal == 4){
@@ -71,8 +71,8 @@ for(i in 1:(numOfPoints)) {
   nrows[i, 1] = floor(nTotalRows * (decrease^(numOfPoints-i)))
 }
 
-write(nrows, "results/Experiment4_nrows" +iteration+".dat", format="csv")
-
+write(nrows, "results/Experiment4_nrows_Prop"+ propStr + "_" +iteration+".dat", format="csv")
+/*
 [TK1, TKC1, D1, L1, meta1, Stats1, Xout1, eOut1, foffb1, foffe1, params1] = incSliceLine(addedX=oldX, addedE=oldE, k=10,
   alpha=0.95, minSup=sigma, tpBlksz=16, verbose=TRUE, encodeLat = FALSE);
 
@@ -112,3 +112,4 @@ for( i in 1: numOfPoints){
 
     write(timeTaken, "results/Experiment4_times_"+ str + "_Prop"+ propStr + "_" +(numOfPoints*iteration +i)+ ".dat", format="csv")
 }
+*/

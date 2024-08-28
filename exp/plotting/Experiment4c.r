@@ -2,7 +2,7 @@ require(graphics)
 require(Matrix)
 
 numOfPoints <- 100
-lastX <- 20;
+lastX <- 10;
 
 
 
@@ -11,23 +11,23 @@ pdf(file="plots/Experiment4_Prop30.pdf",
 
 data1 <- matrix(NA, nrow = (numOfPoints), ncol = 5)
 for (i in (numOfPoints - lastX +1):(numOfPoints)) {
-    file_name <- paste0("results/Experiment4_times_BothDisabled_Prop30_", (i +10), ".dat")
+    file_name <- paste0("results/Experiment4_times_BothDisabled_Prop50_", (i +10), ".dat")
     data1[i, 1] <- as.matrix(scan(file_name))[, 1]
 }
 for (i in (numOfPoints - lastX +1):(numOfPoints)) {
-    file_name <- paste0("results/Experiment4_times_NoneDisabled_Prop30_", (i +10), ".dat")
+    file_name <- paste0("results/Experiment4_times_NoneDisabled_Prop50_", (i +10), ".dat")
     data1[i, 2] <- as.matrix(scan(file_name))[, 1]
 }
 for (i in (numOfPoints - lastX +1):(numOfPoints)) {
-    file_name <- paste0("results/Experiment4_times_ScoreDisabled_Prop30_", (i +10), ".dat")
+    file_name <- paste0("results/Experiment4_times_ScoreDisabled_Prop50_", (i +10), ".dat")
     data1[i, 3] <- as.matrix(scan(file_name))[, 1]
 }
 for (i in (numOfPoints - lastX +1):(numOfPoints)) {
-    file_name <- paste0("results/Experiment4_times_SliceDisabled_Prop30_", (i +10), ".dat")
+    file_name <- paste0("results/Experiment4_times_SliceDisabled_Prop50_", (i +10), ".dat")
     data1[i, 4] <- as.matrix(scan(file_name))[, 1]
 }
 for (i in (numOfPoints - lastX +1):(numOfPoints)) {
-    file_name <- paste0("results/Experiment4_timesSF_Prop30_", (i +10), ".dat")
+    file_name <- paste0("results/Experiment4_timesSF_Prop50_", (i +10), ".dat")
     data1[i, 5] <- as.matrix(scan(file_name))[, 1]
 }
 
@@ -36,7 +36,7 @@ data <- as.matrix((data1) / 1000)
 # read the x-axis tick labels from file
 x_labels <- matrix(NA, nrow = 0, ncol = 1)
 for(i in ((numOfPoints - lastX +10)/10):10) {
-    file_name = paste0("results/Experiment4_nrows", i, ".dat")
+    file_name = paste0("results/Experiment4_nrows_Prop50_", i, ".dat")
     x_labels1 <- as.matrix(scan(file_name));
     x_labels <- rbind(x_labels, x_labels1)
 }
@@ -88,7 +88,7 @@ axis(1, las=1, at=lastXPoints[seq(1, length(lastXPoints), by=ceiling(length(last
 mtext(2, text="Execution time (s)",line=2.7, cex=0.7) 
 mtext(1, text="Size Feature Mat. ((# rows)/1000)",line=2, cex=0.7) 
 
-text(x = lastXPoints[floor(length(lastXPoints)/3)] , y = 35, labels = expression(paste(frac(abs(italic(" addedX ")), abs(italic(" totalX "))), " = 0.03")), cex = 0.5)
+text(x = lastXPoints[floor(length(lastXPoints)/3)] , y = 35, labels = expression(paste(frac(abs(italic(" addedX ")), abs(italic(" totalX "))), " = 0.3")), cex = 0.5)
 
 # Add a legend
 legend("topright", legend = c("No Pruning", "Full Pruning", "Size Pruning", "Score Pruning", "SliceLine"), 

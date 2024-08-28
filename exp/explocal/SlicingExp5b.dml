@@ -1,0 +1,11 @@
+# experiment 3 compares the pruned slices on each level for incSliceLine and SliceFinder
+
+X = read($1);
+e = read($2);
+
+X = X[, 1:8];
+sigma = $3;
+
+[S,C,D] = slicefinder(X=X, e=e, k=10, alpha=0.95, minSup=sigma, tpBlksz=16, verbose=TRUE);
+
+write(D, "results/Experiment5SF_D.dat", format="csv")
