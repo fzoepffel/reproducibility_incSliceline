@@ -2,7 +2,7 @@
 require(graphics)
 require(Matrix)
 
-num_points <- 40
+num_points <- 20
 
 # Create a PDF file for the plot
 pdf(file="plots/Experiment1.pdf", width=3.7, height=4.0, family="serif", pointsize=14)
