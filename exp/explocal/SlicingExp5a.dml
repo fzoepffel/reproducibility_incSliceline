@@ -7,7 +7,8 @@ X = X[, 1:8];
 
 nTotalRows = nrow(X);
 proportionList = list(0.01, 0.03, 0.09, 0.30, 0.50, 0.99);
-/*
+
+
 for(i in 1:6){
     proportion = as.scalar(proportionList[i]);
     decrease = 1 - proportion;
@@ -28,11 +29,11 @@ for(i in 1:6){
     print("nrow(oldX): " + nrow(oldX));
 
     [TK, TKC, D, L, meta, Stats, Xout, eOut, foffb, foffe, params] = incSliceLine(addedX=addedX, oldX = oldX, oldE = oldE, addedE=addedE, prevLattice = L, metaPrevLattice=meta, prevStats = Stats, prevTK = TK, prevTKC = TKC, k=10,
-        alpha=0.95, minSup=sigma, tpBlksz=16, verbose=TRUE, params=params, prevFoffb = foffb, prevFoffe = foffe, encodeLat = FALSE, disableIncSizePruning= TRUE, disableIncScorePruning= FALSE);
+        alpha=0.95, minSup=sigma, tpBlksz=16, verbose=TRUE, params=params, prevFoffb = foffb, prevFoffe = foffe, encodeLat = FALSE,  pruningStrat = 2);
 
     write(D, "results/Experiment5_D_SizeDisabled"+i+".dat", format="csv")
 }
-*/
+
 for(i in 1:2){
     proportion = as.scalar(proportionList[i]);
     decrease = 1 - proportion;
@@ -53,11 +54,11 @@ for(i in 1:2){
     print("nrow(oldX): " + nrow(oldX));
 
     [TK, TKC, D, L, meta, Stats, Xout, eOut, foffb, foffe, params] = incSliceLine(addedX=addedX, oldX = oldX, oldE = oldE, addedE=addedE, prevLattice = L, metaPrevLattice=meta, prevStats = Stats, prevTK = TK, prevTKC = TKC, k=10,
-        alpha=0.95, minSup=sigma, tpBlksz=16, verbose=TRUE, params=params, prevFoffb = foffb, prevFoffe = foffe, encodeLat = FALSE, disableIncSizePruning= FALSE, disableIncScorePruning= TRUE);
+        alpha=0.95, minSup=sigma, tpBlksz=16, verbose=TRUE, params=params, prevFoffb = foffb, prevFoffe = foffe, encodeLat = FALSE, pruningStrat = 1);
 
     write(D, "results/Experiment5_D_ScoreDisabled"+i+".dat", format="csv")
 }
-/*
+
 for(i in 1:6){
     proportion = as.scalar(proportionList[i]);
     decrease = 1 - proportion;
@@ -78,9 +79,8 @@ for(i in 1:6){
     print("nrow(oldX): " + nrow(oldX));
 
     [TK, TKC, D, L, meta, Stats, Xout, eOut, foffb, foffe, params] = incSliceLine(addedX=addedX, oldX = oldX, oldE = oldE, addedE=addedE, prevLattice = L, metaPrevLattice=meta, prevStats = Stats, prevTK = TK, prevTKC = TKC, k=10,
-        alpha=0.95, minSup=sigma, tpBlksz=16, verbose=TRUE, params=params, prevFoffb = foffb, prevFoffe = foffe, encodeLat = FALSE, disableIncSizePruning= TRUE, disableIncScorePruning= TRUE);
+        alpha=0.95, minSup=sigma, tpBlksz=16, verbose=TRUE, params=params, prevFoffb = foffb, prevFoffe = foffe, encodeLat = FALSE, pruningStrat = 3);
 
     write(D, "results/Experiment5_D_BothDisabled"+i+".dat", format="csv")
 }
 
-*/

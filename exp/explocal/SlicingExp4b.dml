@@ -2,7 +2,7 @@
 # for 10 iterations with increasingly large input feature matrices 
 # while keeping the proportion of addedX/totalX the same over all iterations  (see SlicingExp2.dml)
 # the execution is also measured for the slicefinder algorithm for the same input matrices (see SlicingExp2b.dml)
-/*
+
 X = read($1);
 e = read($2);
 sigma = $3;
@@ -49,12 +49,11 @@ for( i in 1: (numOfPoints)){
     X2 = rbind(X2, addedX);
     e2 = rbind(e2, addedE);
 
-    # run twice to warm up the system
-    [S,C,D] = slicefinder(X=X2, e=e2, k=10, alpha=0.95, minSup=sigma, tpBlksz=16, verbose=TRUE);
+    # run once to warm up the system
     [S,C,D] = slicefinder(X=X2, e=e2, k=10, alpha=0.95, minSup=sigma, tpBlksz=16, verbose=TRUE);
 
     timeTaken = 0;
-    for(j in 1: 10){
+    for(j in 1: 2){
         start = time();
         [S,C,D] = slicefinder(X=X2, e=e2, k=10, alpha=0.95, minSup=sigma, tpBlksz=16, verbose=TRUE);
         end = time()
@@ -62,8 +61,7 @@ for( i in 1: (numOfPoints)){
         timeTaken = timeTaken + (((end-start) / 1000000  ));
     }
 
-    timeTaken = timeTaken / 10;
+    timeTaken = timeTaken / 2;
     write(timeTaken, "results/Experiment4_timesSF"+ "_Prop"+ propStr+ "_" + (numOfPoints*iteration + i)+".dat", format="csv")
 }
 
-*/

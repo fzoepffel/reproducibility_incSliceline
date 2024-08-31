@@ -29,8 +29,7 @@ for( i in 1: (numOfPoints)){
     X2 = rbind(X2, addedX);
     e2 = rbind(e2, addedE);
 
-    # run twice to warm up the system
-    [S,C,D] = slicefinder(X=X2, e=e2, k=10, alpha=0.95, minSup=sigma, tpBlksz=16, verbose=TRUE);
+    # run once to warm up the system
     [S,C,D] = slicefinder(X=X2, e=e2, k=10, alpha=0.95, minSup=sigma, tpBlksz=16, verbose=TRUE);
 
     timeTaken = 0;

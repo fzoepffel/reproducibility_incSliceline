@@ -10,6 +10,16 @@ iteration = $4;
 disableIncScorePruning = $5;
 disableIncSizePruning = $6;
 
+if(disableIncScorePruning & disableIncSizePruning){
+  pruningStrat = 3; 
+} else if (disableIncSizePruning){
+  pruningStrat = 2;
+} else if (disableIncScorePruning){
+  pruningStrat = 1;
+} else {
+  pruningStrat = 0;
+}
+
 
 str = ""
 if(disableIncScorePruning){
@@ -72,7 +82,7 @@ for(i in 1:(numOfPoints)) {
 }
 
 write(nrows, "results/Experiment4_nrows_Prop"+ propStr + "_" +iteration+".dat", format="csv")
-/*
+
 [TK1, TKC1, D1, L1, meta1, Stats1, Xout1, eOut1, foffb1, foffe1, params1] = incSliceLine(addedX=oldX, addedE=oldE, k=10,
   alpha=0.95, minSup=sigma, tpBlksz=16, verbose=TRUE, encodeLat = FALSE);
 
@@ -91,25 +101,21 @@ for( i in 1: numOfPoints){
     foffe = foffe1;
     params = params1;
 
-    # run twice to warm up the system
+    # run once to warm up the system
     [TK1, TKC1, D1, L1, meta1, Stats1, Xout1, eOut1, foffb1, foffe1, params1] = incSliceLine(addedX=addedX, oldX = oldX, oldE = oldE, addedE=addedE, prevLattice = L, metaPrevLattice=meta, prevStats = Stats, prevTK = TK, prevTKC = TKC, k=10,
-        alpha=0.95, minSup=sigma, tpBlksz=16, verbose=TRUE, params=params, prevFoffb = foffb, prevFoffe = foffe, encodeLat = FALSE,  disableIncSizePruning = disableIncSizePruning, disableIncScorePruning = disableIncScorePruning);
-    [TK1, TKC1, D1, L1, meta1, Stats1, Xout1, eOut1, foffb1, foffe1, params1] = incSliceLine(addedX=addedX, oldX = oldX, oldE = oldE, addedE=addedE, prevLattice = L, metaPrevLattice=meta, prevStats = Stats, prevTK = TK, prevTKC = TKC, k=10,
-        alpha=0.95, minSup=sigma, tpBlksz=16, verbose=TRUE, params=params, prevFoffb = foffb, prevFoffe = foffe, encodeLat = FALSE,  disableIncSizePruning = disableIncSizePruning, disableIncScorePruning = disableIncScorePruning);
-
+        alpha=0.95, minSup=sigma, tpBlksz=16, verbose=TRUE, params=params, prevFoffb = foffb, prevFoffe = foffe, encodeLat = FALSE,  pruningStrat = pruningStrat);
 
     timeTaken = 0;
-    for(j in 1: 10){
+    for(j in 1: 2){
         start = time();
         [TK1, TKC1, D1, L1, meta1, Stats1, Xout1, eOut1, foffb1, foffe1, params1] = incSliceLine(addedX=addedX, oldX = oldX, oldE = oldE, addedE=addedE, prevLattice = L, metaPrevLattice=meta, prevStats = Stats, prevTK = TK, prevTKC = TKC, k=10,
-        alpha=0.95, minSup=sigma, tpBlksz=16, verbose=TRUE, params=params, prevFoffb = foffb, prevFoffe = foffe, encodeLat = FALSE, disableIncSizePruning = disableIncSizePruning, disableIncScorePruning = disableIncScorePruning);
+        alpha=0.95, minSup=sigma, tpBlksz=16, verbose=TRUE, params=params, prevFoffb = foffb, prevFoffe = foffe, encodeLat = FALSE, pruningStrat = pruningStrat);
         end = time()
 
         timeTaken =timeTaken + (((end-start) / 1000000 ))
     }
 
-    timeTaken = timeTaken / 10;
+    timeTaken = timeTaken / 2;
 
     write(timeTaken, "results/Experiment4_times_"+ str + "_Prop"+ propStr + "_" +(numOfPoints*iteration +i)+ ".dat", format="csv")
 }
-*/

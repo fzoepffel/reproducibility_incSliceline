@@ -11,19 +11,19 @@ pdf(file="plots/Experiment4_Prop30.pdf",
 
 data1 <- matrix(NA, nrow = (numOfPoints), ncol = 5)
 for (i in (numOfPoints - lastX +1):(numOfPoints)) {
-    file_name <- paste0("results/Experiment4_times_BothDisabled_Prop50_", (i +10), ".dat")
+    file_name <- paste0("results/Experiment4_times_BothDisabled_Prop30_", (i +10), ".dat")
     data1[i, 1] <- as.matrix(scan(file_name))[, 1]
 }
 for (i in (numOfPoints - lastX +1):(numOfPoints)) {
-    file_name <- paste0("results/Experiment4_times_NoneDisabled_Prop50_", (i +10), ".dat")
+    file_name <- paste0("results/Experiment4_times_NoneDisabled_Prop30_", (i +10), ".dat")
     data1[i, 2] <- as.matrix(scan(file_name))[, 1]
 }
 for (i in (numOfPoints - lastX +1):(numOfPoints)) {
-    file_name <- paste0("results/Experiment4_times_ScoreDisabled_Prop50_", (i +10), ".dat")
+    file_name <- paste0("results/Experiment4_times_ScoreDisabled_Prop30_", (i +10), ".dat")
     data1[i, 3] <- as.matrix(scan(file_name))[, 1]
 }
 for (i in (numOfPoints - lastX +1):(numOfPoints)) {
-    file_name <- paste0("results/Experiment4_times_SliceDisabled_Prop50_", (i +10), ".dat")
+    file_name <- paste0("results/Experiment4_times_SliceDisabled_Prop30_", (i +10), ".dat")
     data1[i, 4] <- as.matrix(scan(file_name))[, 1]
 }
 for (i in (numOfPoints - lastX +1):(numOfPoints)) {
@@ -36,7 +36,7 @@ data <- as.matrix((data1) / 1000)
 # read the x-axis tick labels from file
 x_labels <- matrix(NA, nrow = 0, ncol = 1)
 for(i in ((numOfPoints - lastX +10)/10):10) {
-    file_name = paste0("results/Experiment4_nrows_Prop50_", i, ".dat")
+    file_name = paste0("results/Experiment4_nrows_Prop30_", i, ".dat")
     x_labels1 <- as.matrix(scan(file_name));
     x_labels <- rbind(x_labels, x_labels1)
 }
