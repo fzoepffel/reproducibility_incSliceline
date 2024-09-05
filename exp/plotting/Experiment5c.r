@@ -5,8 +5,7 @@ proportions <- c(0.01, 0.03, 0.09, 0.30, 0.50, 0.99)
 
 for( i in 1:6){
   file_name1 <- paste0("plots/Experiment5_BothDisabled", i, ".pdf")
-  pdf(file=file_name1,
-    width=4.5, height=4.0, family="serif", pointsize=14)
+  pdf(file=file_name1, width=4.5, height=4.0, family="serif", pointsize=14)
 
   data0 = read.table("results/Experiment5SF_D.dat", sep=",")[,2:3]
   file_name2 <- paste0("results/Experiment5_D_BothDisabled", i, ".dat")
@@ -20,11 +19,11 @@ for( i in 1:6){
 
   print(ncol(data1))
 
-  par(mgp = c(3, 0.5, 0))  # Second value (0.5) controls the position of the labels
+  par(mgp = c(3, 0.6, 0))  # Second value (0.6) controls the position of the labels
 
   title <- paste0("Evaluated and Valid Slices, Proportion = ", prop)
 
-  barplot( data1, 
+  barplot(data1, 
           main = title,
           cex.main = 0.7,
           space = c(0, 0.3),
@@ -35,14 +34,14 @@ for( i in 1:6){
           log = "",
           axes = FALSE, 
           names.arg = c("1","2","3","4","5","6","7","8"),
-          cex.names = 0.7,
-          args.legend = list(x="topright", bty="n", bty="n", ncol=1),
+          cex.names = 0.5,
+          args.legend = list(x="topright", bty="n", ncol=1),
           beside = TRUE
   )
 
-  axis(2, las=1, cex.axis=0.8) 
-  mtext(2,text="# Enumerated Slices",line=2, cex=0.7) 
-  mtext(1,text="Lattice Level L",line=1.5, cex=0.7) 
+  axis(2, las=1, cex.axis=0.5) 
+  mtext(2, text="# Enumerated Slices", line=1.4, cex=0.5) 
+  mtext(1, text="Lattice Level L", line=1.2, cex=0.5) 
 
   # add prop to the paste in expression
   text(x = 30, y = 2400, labels = bquote(paste(frac(abs(italic(" addedX ")), abs(italic(" totalX "))), " = ", .(prop))), cex = 0.5)
@@ -50,9 +49,14 @@ for( i in 1:6){
 
   # Add a legend
   legend("topright", legend = c("SF: Evaluated", "SF: Valid","incSL: Evaluated", "incSL: Valid" ), 
-        fill = plot_colors, cex=0.65)
+         fill = plot_colors, cex=0.5)
 
-  box()	              # box around plot       
-  dev.off() 
+  box()  # Box around plot       
+  dev.off()
 
+  # Save the data to a CSV file
+  output_file <- paste0("results/allData/Experiment5_BothDisabled", i, "_AllData.csv")
+  output_data <- as.data.frame(t(data1))  # Transpose the data back for saving
+  colnames(output_data) <- c("SF_Evaluated", "SF_Valid", "incSL_Evaluated", "incSL_Valid")
+  write.table(output_data, file = output_file, sep = ",", row.names = FALSE, col.names = TRUE)
 }

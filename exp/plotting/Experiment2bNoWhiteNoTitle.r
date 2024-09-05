@@ -4,7 +4,8 @@ require(Matrix)
 numOfPoints <- 100
 
 # Create a PDF file for the plot
-pdf(file="plots/Experiment2b.pdf", width=3.7, height=4.0, family="serif", pointsize=14)
+pdf(file="plots/Experiment2bNoWhiteNoTitle.pdf",width=3.2, height=2.5,family="serif", pointsize=14)
+par(mar = c(2.2, 2.0, 0.2, 0.2) + 0.1) 
 
 # Reading data
 data1 <- matrix(NA, nrow = numOfPoints, ncol = 2)
@@ -39,7 +40,7 @@ par(mgp = c(3, 0.6, 0))
 
 # Plot the first column of data
 plot(tail(points, lastX), tail(data[, 1], lastX),  
-    main="20x Increasing Input Size, Same Proportions",
+    main="",
     cex.main=0.7,    
     type="o",           
     pch=19, 
@@ -61,23 +62,22 @@ lastXPoints <- tail(points, lastX)
 lastXData <- tail(x_labels, lastX)
 y_ticks <- 10^seq(log10(0.1), log10(10), length.out = 7)
 
-axis(2, las=2, at=y_ticks, labels=round(y_ticks, 1), cex.axis=0.5)
+axis(2, las=2, at=y_ticks, labels=round(y_ticks, 1), cex.axis=0.6)
 axis(1, las=1, at=lastXPoints[seq(1, length(lastXPoints), by=ceiling(length(lastXPoints)/10))], 
-     labels=lastXData[seq(1, length(lastXData), by=ceiling(length(lastXData)/10)), ], cex.axis=0.5) # vertical x axis
+     labels=lastXData[seq(1, length(lastXData), by=ceiling(length(lastXData)/10)), ], cex.axis=0.6) # vertical x axis
 
-mtext(2, text="Execution time (s)", line=1.3, cex=0.5) 
-mtext(1, text="Size Feature Mat. ((# rows)/1000)", line=1.3, cex=0.5) 
+mtext(2, text="Execution time (s)", line=1.3, cex=0.6) 
+mtext(1, text="Size Feature Mat. ((# rows)/1000)", line=1.3, cex=0.6) 
 
 text(x = lastXPoints[floor(length(lastXPoints)/4)], y = 35, 
-     labels = expression(paste(frac(abs(italic(" addedX ")), abs(italic(" totalX "))), " = 0.03")), cex = 0.5)
+     labels = expression(paste(frac(abs(italic(" addedX ")), abs(italic(" totalX "))), " = 0.03")), cex = 0.6)
 
 # Add a legend
 legend("topright", legend = c("IncSliceLine", "SliceLine"), 
-       col = plot_colors[1:2], lty = 1:2, pch = 19, cex=0.5)
+       col = plot_colors[1:2], lty = 1:2, pch = 19, cex=0.6)
 
 box()	              # box around plot       
 dev.off()
 
 # Save the x and y data to a CSV file
 output_data <- data.frame(X_Labels = lastXData, Time_IncSliceLine = tail(data[, 1], lastX), Time_SliceLine = tail(data[, 2], lastX))
-write.table(output_data, file = "results/allData/Experiment2b_AllData.csv", sep = ",", row.names = FALSE, col.names = TRUE)

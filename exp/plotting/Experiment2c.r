@@ -3,44 +3,39 @@ require(Matrix)
 
 numOfPoints <- 100
 
-pdf(file="plots/Experiment2c.pdf",
-    width=3.7, height=4.0, family="serif", pointsize=14)
+# Create a PDF file for the plot
+pdf(file="plots/Experiment2c.pdf", width=3.7, height=4.0, family="serif", pointsize=14)
 
-data1 <- matrix(NA, nrow = (numOfPoints), ncol = 2)
-for (i in 1:(numOfPoints)) {
+# Reading data
+data1 <- matrix(NA, nrow = numOfPoints, ncol = 2)
+for (i in 1:numOfPoints) {
     file_name <- paste0("results/Experiment2_times", (i +10), ".dat")
     data1[i, 1] <- as.matrix(scan(file_name))[, 1]
 }
-for (i in 1:(numOfPoints)) {
+for (i in 1:numOfPoints) {
     file_name <- paste0("results/Experiment2_timesSF", (i +10), ".dat")
     data1[i, 2] <- as.matrix(scan(file_name))[, 1]
 }
 
-data <- as.matrix((data1) / 1000)
+data <- as.matrix(data1 / 1000)
 
-# read the x-axis tick labels from file
+# Read the x-axis tick labels from file
 x_labels <- matrix(NA, nrow = 0, ncol = 1)
 for(i in 1:10) {
     file_name = paste0("results/Experiment2_nrows", i, ".dat")
-    x_labels1 <- as.matrix(scan(file_name));
+    x_labels1 <- as.matrix(scan(file_name))
     x_labels <- rbind(x_labels, x_labels1)
 }
 
-x_labels = x_labels/1000;
-# reduce the number of digits after the decimal point
+x_labels <- x_labels / 1000
 x_labels <- round(x_labels, 1)
 
 points <- seq(1, numOfPoints)
 plot_colors <- c("cornflowerblue","gray40","black","orange","orangered")
 
-# remove the 11th, 21st, 31st, ..., 91st row from data and points 
-# as these are slower as they are the first runs of the experiments
-#data <- data[-seq(1, 91, 10),]
-#points <- points[-seq(1, 91, 10)]
+lastX <- 10
 
-lastX <- 10;
-
-# only keep the 
+par(mgp = c(3, 0.6, 0))
 
 # Plot the first column of data
 plot(tail(points, lastX), tail(data[, 1], lastX),  
@@ -64,17 +59,25 @@ lines(points, data[, 2], type = "o", cex=0.4, col = plot_colors[2], lty = 2, pch
 
 lastXPoints <- tail(points, lastX)
 lastXData <- tail(x_labels, lastX)
+y_ticks <- 10^seq(log10(0.1), log10(10), length.out = 7)
 
-axis(2, las=2, at=c(0.1, 0.5, 1, 2, 5, 10), labels=c("0.1","0.5", "1", "2", "5", "10"), cex.axis=0.7) # horizontal y axis
-axis(1, las=1, at=lastXPoints[seq(1, length(lastXPoints), by=ceiling(length(lastXPoints)/10))], labels=lastXData[seq(1, length(lastXData), by=ceiling(length(lastXData)/10)), ], cex.axis=0.5) # vertical x axis
-mtext(2, text="Execution time (s)",line=2.7, cex=0.7) 
-mtext(1, text="Size Feature Mat. ((# rows)/1000)",line=2, cex=0.7) 
+axis(2, las=2, at=y_ticks, labels=round(y_ticks, 1), cex.axis=0.5)
+axis(1, las=1, at=lastXPoints[seq(1, length(lastXPoints), by=ceiling(length(lastXPoints)/10))], 
+     labels=lastXData[seq(1, length(lastXData), by=ceiling(length(lastXData)/10)), ], cex.axis=0.5)
 
-text(x = lastXPoints[floor(length(lastXPoints)/3)] , y = 35, labels = expression(paste(frac(abs(italic(" addedX ")), abs(italic(" totalX "))), " = 0.03")), cex = 0.5)
+mtext(2, text="Execution time (s)", line=1.3, cex=0.5) 
+mtext(1, text="Size Feature Mat. ((# rows)/1000)", line=1.3, cex=0.5) 
+
+text(x = lastXPoints[floor(length(lastXPoints)/3)], y = 35, 
+     labels = expression(paste(frac(abs(italic(" addedX ")), abs(italic(" totalX "))), " = 0.03")), cex = 0.5)
 
 # Add a legend
 legend("topright", legend = c("IncSliceLine", "SliceLine"), 
-       col = plot_colors[1:2], lty = 1:2, pch = 19, cex=0.7)
+       col = plot_colors[1:2], lty = 1:2, pch = 19, cex=0.5)
 
 box()	              # box around plot       
-dev.off() 
+dev.off()
+
+# Save the x and y data to a CSV file
+output_data <- data.frame(X_Labels = lastXData, Time_IncSliceLine = tail(data[, 1], lastX), Time_SliceLine = tail(data[, 2], lastX))
+write.table(output_data, file = "results/allData/Experiment2c_AllData.csv", sep = ",", row.names = FALSE, col.names = TRUE)
