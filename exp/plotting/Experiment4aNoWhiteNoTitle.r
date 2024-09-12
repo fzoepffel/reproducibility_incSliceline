@@ -64,7 +64,7 @@ plot(tail(points, lastX), tail(data[, 1], lastX),
     log="y",
     lwd=1.1, 
     lty=1,
-    ylim = c(1, 100))
+    ylim = c(0.5, 500))
 
 # Add the remaining columns of data
 lines(points, data[, 2], type = "o", cex=0.4, col = plot_colors[2], lty = 2, pch = 19)
@@ -83,8 +83,8 @@ axis(1, las=1, at=lastXPoints[seq(1, length(lastXPoints), by=ceiling(length(last
 mtext(2, text="Execution time (s)", line=1.3, cex=0.6) 
 mtext(1, text="Size Feature Mat. ((# rows)/1000)", line=1.3, cex=0.6) 
 
-text(x = lastXPoints[floor(length(lastXPoints)/3)*2], y = 35, 
-     labels = expression(paste(frac(abs(italic(" addedX ")), abs(italic(" totalX "))), " = 0.01")), cex = 0.6)
+text(x = lastXPoints[floor(length(lastXPoints)/5)*4], y = 150, 
+     labels = expression(paste(frac(abs(italic(" addedX ")), abs(italic(" totalX "))), " = 0.0005")), cex = 0.6)
 
 # Add a legend
 legend("topleft", legend = c("No Pruning", "Full Pruning", "Size Pruning", "Score Pruning", "SliceLine"), 

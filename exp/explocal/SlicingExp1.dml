@@ -11,10 +11,10 @@ totalSize = nrow(X);
 write(totalSize, "results/Experiment1_totalXSize.dat", format="csv");
 
 # compute logarithmically increasing x values for the number of rows
-start = 5*sigma;
+start = 2*sigma;
 # to make sure that the last iteration still has enough data 
 # so not all basic slices fall under the minSup we use 5*sigma
-end = (nrow(X) -(5*sigma))/2;
+end = (nrow(X) -(2*sigma))/2;
 num_points = 20;
 log_start = log(start);
 log_end = log(end);

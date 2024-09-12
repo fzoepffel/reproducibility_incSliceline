@@ -6,8 +6,8 @@
 # while keeping the proportion of addedX/totalX the same over all iterations  (see SlicingExp2.dml)
 # the execution is also measured for the slicefinder algorithm for the same input matrices (see SlicingExp2b.dml)
 
-CMD="java -Xmx600g -Xms600g -cp ./lib/*:./SystemDS.jar org.apache.sysds.api.DMLScript "
-SIGMA="50"
+CMD="java -Xmx15g -Xms15g -cp ./lib/*:./SystemDS.jar org.apache.sysds.api.DMLScript "
+SIGMA="10"
 
 for i in {1..10}
 do

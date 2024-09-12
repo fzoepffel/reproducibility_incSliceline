@@ -20,7 +20,7 @@ propStr = 0;
 propVal = $5;
 
 if(propVal == 1){
-    proportion = 0.01;
+    proportion = 0.0005;
     propStr = 1;
 }
 
@@ -30,10 +30,9 @@ if(propVal == 2){
 }
 
 if(propVal == 3){
-    proportion = 0.3;
+    proportion = 0.5;
     propStr = 50;
 }
-
 decrease = 1 - proportion;
 nTotalRows = nrow(X) * (decrease^(numOfPoints*(10-iteration)));
 oldX = X[1:floor(nTotalRows * (decrease^numOfPoints)) ,  ]

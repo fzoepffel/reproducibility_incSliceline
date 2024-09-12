@@ -70,7 +70,7 @@ mtext(2, text="Execution time (s)", line=1.3, cex=0.6)
 mtext(1, text="Size Feature Mat. ((# rows)/1000)", line=1.3, cex=0.6) 
 
 text(x = lastXPoints[floor(length(lastXPoints)/3)], y = 35, 
-     labels = expression(paste(frac(abs(italic(" addedX ")), abs(italic(" totalX "))), " = 0.03")), cex = 0.6)
+     labels = expression(paste(frac(abs(italic(" addedX ")), abs(italic(" totalX "))), " = 0.0005")), cex = 0.6)
 
 # Add a legend
 legend("topright", legend = c("IncSliceLine", "SliceLine"), 

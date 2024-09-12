@@ -47,7 +47,7 @@ propStr = 0;
 propVal = $7;
 
 if(propVal == 1){
-    proportion = 0.01;
+    proportion = 0.0005;
     propStr = 1;
 }
 
@@ -57,18 +57,8 @@ if(propVal == 2){
 }
 
 if(propVal == 3){
-    proportion = 0.3;
-    propStr = 30;
-}
-
-if(propVal == 4){
-    proportion = 0.9;
-    propStr = 90;
-}
-
-if(propVal == 5){
-    proportion = 0.98;
-    propStr = 98;
+    proportion = 0.5;
+    propStr = 50;
 }
 
 decrease = 1 - proportion;

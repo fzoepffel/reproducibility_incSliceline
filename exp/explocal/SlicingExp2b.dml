@@ -13,7 +13,7 @@ X = X[, 1:8];
 numOfPoints = 10;
 
 nTotalRows = nrow(X);
-proportion = 0.03;
+proportion = 0.0005;
 decrease = 1 - proportion;
 nTotalRows = nrow(X) * (decrease^(numOfPoints*(10-iteration)));
 oldX = X[1:floor(nTotalRows * (decrease^numOfPoints)) ,  ]

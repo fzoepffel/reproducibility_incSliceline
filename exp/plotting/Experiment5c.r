@@ -1,7 +1,7 @@
 require(graphics)
 require(Matrix)
 
-proportions <- c(0.01, 0.03, 0.09, 0.30, 0.50, 0.99)
+proportions <- c(0.0005, 0.03, 0.09, 0.30, 0.50, 0.9995);
 
 for( i in 1:6){
   file_name1 <- paste0("plots/Experiment5_BothDisabled", i, ".pdf")
@@ -30,7 +30,7 @@ for( i in 1:6){
           xlab = "", 
           ylab = "",
           col=plot_colors,
-          ylim = c(0,5000),
+          ylim = c(0,16000),
           log = "",
           axes = FALSE, 
           names.arg = c("1","2","3","4","5","6","7","8"),
@@ -44,8 +44,8 @@ for( i in 1:6){
   mtext(1, text="Lattice Level L", line=1.2, cex=0.5) 
 
   # add prop to the paste in expression
-  text(x = 30, y = 2400, labels = bquote(paste(frac(abs(italic(" addedX ")), abs(italic(" totalX "))), " = ", .(prop))), cex = 0.5)
-  text(x = 30, y = 1600, labels = expression(paste(abs(italic(" totalX ")), " = 32.6k")), cex = 0.5)
+  text(x = 30, y = 8000, labels = bquote(paste(frac(abs(italic(" addedX ")), abs(italic(" totalX "))), " = ", .(prop))), cex = 0.5)
+  text(x = 30, y = 6000, labels = expression(paste(abs(italic(" totalX ")), " = 32.6k")), cex = 0.5)
 
   # Add a legend
   legend("topright", legend = c("SF: Evaluated", "SF: Valid","incSL: Evaluated", "incSL: Valid" ), 

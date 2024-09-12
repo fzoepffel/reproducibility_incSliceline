@@ -64,7 +64,7 @@ plot(tail(points, lastX), tail(data[, 1], lastX),
     log="y",
     lwd=1.1, 
     lty=1,
-    ylim = c(0.1, 100))
+    ylim = c(0.5, 500))
 
 # Add the remaining columns of data
 lines(points, data[, 2], type = "o", cex=0.4, col = plot_colors[2], lty = 2, pch = 19)
