@@ -67,7 +67,7 @@ totalDataPoints = 100;  # 10 iterations * 10 datapoints
 nrows = matrix(0, numOfPoints, 1);
 
 # Set up the log scale from 15 to nrow(X) over 100 points
-minRows = 100;
+minRows = 1000;
 maxRows = nrow(X);
 logScale = matrix(0, totalDataPoints, 1);
 for(i in 1:totalDataPoints) {
