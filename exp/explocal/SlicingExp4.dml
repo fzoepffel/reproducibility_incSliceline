@@ -106,16 +106,15 @@ for( i in 1: numOfPoints){
     [TK, TKC, D, L, meta, Stats, Xout, eOut, foffb, foffe, params] = incSliceLine(addedX=oldX, addedE=oldE, k=10,
     alpha=0.95, minSup=sigma, tpBlksz=16, verbose=TRUE, encodeLat=FALSE);
 
-    # Warm up the system
-    [TK1, TKC1, D1, L1, meta1, Stats1, Xout1, eOut1, foffb1, foffe1, params1] = incSliceLine(addedX=addedX, oldX=oldX, oldE=oldE, addedE=addedE, prevLattice=L, metaPrevLattice=meta, prevStats=Stats, prevTK=TK, prevTKC=TKC, k=10,
-        alpha=0.95, minSup=sigma, tpBlksz=16, verbose=TRUE, params=params, prevFoffb=foffb, prevFoffe=foffe, encodeLat=FALSE);
+    [TK1, TKC1, D1, L1, meta1, Stats1, Xout1, eOut1, foffb1, foffe1, params1] = incSliceLine(addedX=addedX, oldX = oldX, oldE = oldE, addedE=addedE, prevLattice = L, metaPrevLattice=meta, prevStats = Stats, prevTK = TK, prevTKC = TKC, k=10,
+        alpha=0.95, minSup=sigma, tpBlksz=16, verbose=TRUE, params=params, prevFoffb = foffb, prevFoffe = foffe, encodeLat = FALSE,  pruningStrat = pruningStrat);
 
     timeTaken = 0;
     for(j in 1:10) {
         start = time();
-        [TK1, TKC1, D1, L1, meta1, Stats1, Xout1, eOut1, foffb1, foffe1, params1] = incSliceLine(addedX=addedX, oldX=oldX, oldE=oldE, addedE=addedE, prevLattice=L, metaPrevLattice=meta, prevStats=Stats, prevTK=TK, prevTKC=TKC, k=10,
-            alpha=0.95, minSup=sigma, tpBlksz=16, verbose=TRUE, params=params, prevFoffb=foffb, prevFoffe=foffe, encodeLat=FALSE);
-        end = time();
+        [TK1, TKC1, D1, L1, meta1, Stats1, Xout1, eOut1, foffb1, foffe1, params1] = incSliceLine(addedX=addedX, oldX = oldX, oldE = oldE, addedE=addedE, prevLattice = L, metaPrevLattice=meta, prevStats = Stats, prevTK = TK, prevTKC = TKC, k=10,
+            alpha=0.95, minSup=sigma, tpBlksz=16, verbose=TRUE, params=params, prevFoffb = foffb, prevFoffe = foffe, encodeLat = FALSE, pruningStrat = pruningStrat);
+        end = time()
 
         timeTaken = timeTaken + ((end - start) / 1000000);
     }
