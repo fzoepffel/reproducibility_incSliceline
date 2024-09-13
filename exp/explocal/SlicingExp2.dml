@@ -1,8 +1,3 @@
-# experiment 2 measures the execution time of the incremental slice line algorithm 
-# for 10 iterations with increasingly large input feature matrices 
-# while keeping the proportion of addedX/totalX the same over all iterations
-# the execution is also measured for the slicefinder algorithm for the same input matrices (see SlicingExp2b.dml)
-
 X = read($1);
 e = read($2);
 sigma = $3;
@@ -10,55 +5,63 @@ iteration = $4;
 
 X = X[, 1:8];
 
-numOfPoints = 10;
-nrows = matrix(0, numOfPoints, 1);
-
 proportion = 0.0005;
 decrease = 1 - proportion;
-nTotalRows = nrow(X) * (decrease^(numOfPoints*(10-iteration)));
+numOfPoints = 10;
+totalDataPoints = 100;  # 10 iterations * 10 datapoints
+nrows = matrix(0, numOfPoints, 1);
 
-oldX = X[1:floor(nTotalRows * (decrease^numOfPoints)) ,  ]
-oldE = e[1:floor(nTotalRows * (decrease^numOfPoints)) ,] 
-
-for(i in 1:(numOfPoints)) {
-  nrows[i, 1] = floor(nTotalRows * (decrease^(numOfPoints-i)))
+# Set up the log scale from 15 to nrow(X) over 100 points
+minRows = 100;
+maxRows = nrow(X);
+logScale = matrix(0, totalDataPoints, 1);
+for(i in 1:totalDataPoints) {
+    logScale[i,1] = exp(log(minRows) + (i-1) * (log(maxRows) - log(minRows)) / (totalDataPoints-1));
 }
 
-write(nrows, "results/Experiment2_nrows"+iteration+".dat", format="csv")
+# Get the starting index for this iteration
+startIndex = (iteration - 1) * numOfPoints + 1;
 
-[TK1, TKC1, D1, L1, meta1, Stats1, Xout1, eOut1, foffb1, foffe1, params1] = incSliceLine(addedX=oldX, addedE=oldE, k=10,
-  alpha=0.95, minSup=sigma, tpBlksz=16, verbose=TRUE, encodeLat = FALSE);
+nrows = matrix(0, numOfPoints, 1);
+for(i in 1:numOfPoints) {
+    nrows[i, 1] = floor(logScale[startIndex + i - 1, 1]);
+}
 
-for( i in 1: numOfPoints){
-  addedX = X[floor(nTotalRows * (decrease ^ ((numOfPoints +1) -i))) +1 : floor(nTotalRows * (decrease ^ (numOfPoints -i))),  ]
-  addedE = e[floor(nTotalRows * (decrease ^ ((numOfPoints +1) -i))) +1 : floor(nTotalRows * (decrease ^ (numOfPoints -i))), ]
-  oldX = X[1:floor(nTotalRows * (decrease ^ ((numOfPoints +1) -i))) ,  ]
-  oldE = e[1:floor(nTotalRows * (decrease ^ ((numOfPoints +1) -i))) ,]
+# Write the nrows to a CSV file
+write(nrows, "results/Experiment2_nrows" + iteration + ".dat", format = "csv");
 
-  TK = TK1;
-  TKC= TKC1;
-  L = L1;
-  meta = meta1;
-  Stats = Stats1;
-  foffb = foffb1;
-  foffe = foffe1;
-  params = params1;
+# Use log scale values for this iteration
+for(i in 1:numOfPoints) {
+    # Total rows for this iteration and data point
+    totalRows = floor(as.scalar(logScale[startIndex + i - 1, 1]));
+    
+    # Compute oldX and addedX based on the decrease factor
+    oldXRows = floor(totalRows * decrease);
+    addedXRows = floor(totalRows - oldXRows);
 
-  # run once to warm up the system
-  [TK1, TKC1, D1, L1, meta1, Stats1, Xout1, eOut1, foffb1, foffe1, params1] = incSliceLine(addedX=addedX, oldX = oldX, oldE = oldE, addedE=addedE, prevLattice = L, metaPrevLattice=meta, prevStats = Stats, prevTK = TK, prevTKC = TKC, k=10,
-      alpha=0.95, minSup=sigma, tpBlksz=16, verbose=TRUE, params=params, prevFoffb = foffb, prevFoffe = foffe, encodeLat = FALSE);
+    oldX = X[1:oldXRows,  ];
+    oldE = e[1:oldXRows,  ];
 
-  timeTaken = 0;
-  for(j in 1: 10){
-    start = time();
-    [TK1, TKC1, D1, L1, meta1, Stats1, Xout1, eOut1, foffb1, foffe1, params1] = incSliceLine(addedX=addedX, oldX = oldX, oldE = oldE, addedE=addedE, prevLattice = L, metaPrevLattice=meta, prevStats = Stats, prevTK = TK, prevTKC = TKC, k=10,
-      alpha=0.95, minSup=sigma, tpBlksz=16, verbose=TRUE, params=params, prevFoffb = foffb, prevFoffe = foffe, encodeLat = FALSE);
-    end = time()
+    addedX = X[(oldXRows + 1):(oldXRows + addedXRows),  ];
+    addedE = e[(oldXRows + 1):(oldXRows + addedXRows),  ];
 
-    timeTaken =timeTaken + (((end-start) / 1000000 ))
-  }
+    [TK, TKC, D, L, meta, Stats, Xout, eOut, foffb, foffe, params] = incSliceLine(addedX=oldX, addedE=oldE, k=10,
+    alpha=0.95, minSup=sigma, tpBlksz=16, verbose=TRUE, encodeLat=FALSE);
 
-  timeTaken = timeTaken / 10;
+    # Warm up the system
+    [TK1, TKC1, D1, L1, meta1, Stats1, Xout1, eOut1, foffb1, foffe1, params1] = incSliceLine(addedX=addedX, oldX=oldX, oldE=oldE, addedE=addedE, prevLattice=L, metaPrevLattice=meta, prevStats=Stats, prevTK=TK, prevTKC=TKC, k=10,
+        alpha=0.95, minSup=sigma, tpBlksz=16, verbose=TRUE, params=params, prevFoffb=foffb, prevFoffe=foffe, encodeLat=FALSE);
 
-  write(timeTaken, "results/Experiment2_times" +(numOfPoints*iteration +i)+ ".dat", format="csv")
+    timeTaken = 0;
+    for(j in 1:10) {
+        start = time();
+        [TK1, TKC1, D1, L1, meta1, Stats1, Xout1, eOut1, foffb1, foffe1, params1] = incSliceLine(addedX=addedX, oldX=oldX, oldE=oldE, addedE=addedE, prevLattice=L, metaPrevLattice=meta, prevStats=Stats, prevTK=TK, prevTKC=TKC, k=10,
+            alpha=0.95, minSup=sigma, tpBlksz=16, verbose=TRUE, params=params, prevFoffb=foffb, prevFoffe=foffe, encodeLat=FALSE);
+        end = time();
+
+        timeTaken = timeTaken + ((end - start) / 1000000);
+    }
+
+    timeTaken = timeTaken / 10;
+    write(timeTaken, "results/Experiment2_times" + (numOfPoints * iteration + i) + ".dat", format="csv");
 }

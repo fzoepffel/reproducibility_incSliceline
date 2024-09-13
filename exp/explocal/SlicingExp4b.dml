@@ -11,48 +11,33 @@ iteration = $4;
 X = X[, 1:8];
 
 numOfPoints = 10;
+totalDataPoints = 100;  # 10 iterations * 10 data points
 
-nTotalRows = nrow(X);
-
-proportion = 0;
-propStr = 0;
-
-propVal = $5;
-
-if(propVal == 1){
-    proportion = 0.0005;
-    propStr = 1;
+# Set up the log scale from 15 to nrow(X) over 100 points
+minRows = 15;
+maxRows = nrow(X);
+logScale = matrix(0, totalDataPoints, 1);
+for(i in 1:totalDataPoints) {
+    logScale[i, 1] = exp(log(minRows) + (i - 1) * (log(maxRows) - log(minRows)) / (totalDataPoints - 1));
 }
 
-if(propVal == 2){
-    proportion = 0.1;
-    propStr = 10;
-}
+# Get the starting index for this iteration
+startIndex = (iteration - 1) * numOfPoints + 1;
 
-if(propVal == 3){
-    proportion = 0.5;
-    propStr = 50;
-}
-decrease = 1 - proportion;
-nTotalRows = nrow(X) * (decrease^(numOfPoints*(10-iteration)));
-oldX = X[1:floor(nTotalRows * (decrease^numOfPoints)) ,  ]
-oldE = e[1:floor(nTotalRows * (decrease^numOfPoints)) ,] 
-
-X2 = oldX;
-e2 = oldE;
 
 for( i in 1: (numOfPoints)){
-    addedX = X[floor(nTotalRows * (decrease ^ ((numOfPoints +1) -i))) +1 : floor(nTotalRows * (decrease ^ (numOfPoints -i))),  ]
-    addedE = e[floor(nTotalRows * (decrease ^ ((numOfPoints +1) -i))) +1 : floor(nTotalRows * (decrease ^ (numOfPoints -i))), ]
+    # Determine the total number of rows for X2 based on the log scale for the current data point
+    nTotalRows = floor(as.scalar(logScale[startIndex + i - 1, 1]));
 
-    X2 = rbind(X2, addedX);
-    e2 = rbind(e2, addedE);
+    # Select the first nTotalRows of X2
+    X2 = X[1:nTotalRows,  ];
+    e2 = e[1:nTotalRows,  ];
 
     # run once to warm up the system
     [S,C,D] = slicefinder(X=X2, e=e2, k=10, alpha=0.95, minSup=sigma, tpBlksz=16, verbose=TRUE);
 
     timeTaken = 0;
-    for(j in 1: 2){
+    for(j in 1: 10){
         start = time();
         [S,C,D] = slicefinder(X=X2, e=e2, k=10, alpha=0.95, minSup=sigma, tpBlksz=16, verbose=TRUE);
         end = time()
@@ -60,7 +45,7 @@ for( i in 1: (numOfPoints)){
         timeTaken = timeTaken + (((end-start) / 1000000  ));
     }
 
-    timeTaken = timeTaken / 2;
+    timeTaken = timeTaken / 10;
     write(timeTaken, "results/Experiment4_timesSF"+ "_Prop"+ propStr+ "_" + (numOfPoints*iteration + i)+".dat", format="csv")
 }
 
