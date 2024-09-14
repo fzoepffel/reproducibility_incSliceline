@@ -57,7 +57,7 @@ plot(x_values, data[, 1],
     ylim = c(0.1, 100))
 
 # Add the second column of data
-lines(x_values, data[, 2], type = "o", col = "gray40", lty = 2, pch = 19, cex=0.4)
+lines(x_values, data[, 2], type = "o", col = "gray40", lty = 1, pch = 19, cex=0.4)
 
 ticks = seq(2, num_points, 2)
 

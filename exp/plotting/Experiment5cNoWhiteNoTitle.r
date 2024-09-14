@@ -3,6 +3,11 @@ require(Matrix)
 
 proportions <- c(0.0005, 0.03, 0.09, 0.30, 0.50, 0.9995);
 
+# Function to format y-axis ticks
+format_ticks <- function(x) {
+  ifelse(x >= 1000, paste0(x / 1000, "k"), x)
+}
+
 for( i in 1:6){
   file_name1 <- paste0("plots/Experiment5_BothDisabled", i, "NoWhiteNoTitle.pdf")
   pdf(file=file_name1,width=3.2, height=2.5, family="serif", pointsize=14)
@@ -38,7 +43,7 @@ for( i in 1:6){
           beside = TRUE
   )
   par(mgp = c(3, 0.6, 0))
-  axis(2, las=1, cex.axis=0.6) 
+  axis(2, at = seq(0, 14000, by = 2000), labels = format_ticks(seq(0, 14000, by = 2000)), las=1, cex.axis=0.6) 
   mtext(2, text="# Enumerated Slices", line=1.5, cex=0.6) 
   mtext(1, text="Lattice Level L", line=0.7, cex=0.6) 
 

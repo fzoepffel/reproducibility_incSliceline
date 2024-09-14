@@ -1,11 +1,16 @@
 require(graphics)
 require(Matrix)
 
-proportions <- c(0.0005, 0.03, 0.09, 0.30, 0.50, 0.9995)
+proportions <- c(0.0005, 0.03, 0.09, 0.30, 0.60, 0.9995)
+
+# Function to format y-axis ticks
+format_ticks <- function(x) {
+  ifelse(x >= 1000, paste0(x / 1000, "k"), x)
+}
 
 for( i in 1:6){
   file_name1 <- paste0("plots/Experiment3_", i, "NoWhiteNoTitle.pdf")
-  pdf(file=file_name1, width=3.2, height=2.5,family="serif", pointsize=14)
+  pdf(file=file_name1, width=3.2, height=2.5, family="serif", pointsize=14)
   par(mar = c(1.7, 2.0, 0.2, 0.2) + 0.1) 
 
   data0 = read.table("results/Experiment3SF_D.dat", sep=",")[,2:3]
@@ -20,7 +25,7 @@ for( i in 1:6){
 
   print(ncol(data1))
 
-  par(mgp = c(3, 0.1, 0))  # Second value (0.5) controls the position of the labels
+  par(mgp = c(3, 0.1, 0))  # Second value (0.6) controls the position of the labels
 
   barplot(data1, 
           main = "",
@@ -33,13 +38,13 @@ for( i in 1:6){
           log = "",
           axes = FALSE, 
           names.arg = c("1","2","3","4","5","6","7","8"),
-          cex.names = 0.5,
-          args.legend = list(x="topright", bty="n", bty="n", ncol=1),
+          cex.names = 0.6,
+          args.legend = list(x="topright", bty="n", ncol=1),
           beside = TRUE
   )
 
   par(mgp = c(3, 0.6, 0))
-  axis(2, las=1, cex.axis=0.6) 
+  axis(2, at = seq(0, 14000, by = 2000), labels = format_ticks(seq(0, 14000, by = 2000)), las=1, cex.axis=0.6) 
   mtext(2, text="# Enumerated Slices", line=1.5, cex=0.6) 
   mtext(1, text="Lattice Level L", line=0.7, cex=0.6) 
 
@@ -49,7 +54,7 @@ for( i in 1:6){
 
   # Add a legend
   legend("topright", legend = c("SF: Evaluated", "SF: Valid","incSL: Evaluated", "incSL: Valid" ), 
-         fill = plot_colors, cex=0.6)
+         fill = plot_colors, cex=0.5)
 
   box()  # Box around plot       
   dev.off() 
@@ -58,5 +63,4 @@ for( i in 1:6){
   output_file <- paste0("results/allData/Experiment3_", i, "_AllData.csv")
   output_data <- as.data.frame(t(data1))  # Transpose the data back for saving
   colnames(output_data) <- c("SF_Evaluated", "SF_Valid", "incSL_Evaluated", "incSL_Valid")
-  
 }

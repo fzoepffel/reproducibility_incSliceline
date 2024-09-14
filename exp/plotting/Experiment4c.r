@@ -66,10 +66,10 @@ plot(tail(points, lastX), tail(data[, 1], lastX),
     ylim = c(0.1, 100))
 
 # Add the second column of data
-lines(points, data[, 2], type = "o", cex=0.4, col = plot_colors[2], lty = 2, pch = 19)
-lines(points, data[, 3], type = "o", cex=0.4, col = plot_colors[3], lty = 2, pch = 19)
-lines(points, data[, 4], type = "o", cex=0.4, col = plot_colors[4], lty = 2, pch = 19)
-lines(points, data[, 5], type = "o", cex=0.4, col = plot_colors[5], lty = 2, pch = 19)
+lines(points, data[, 2], type = "o", cex=0.4, col = plot_colors[2], lty = 1, pch = 19)
+lines(points, data[, 3], type = "o", cex=0.4, col = plot_colors[3], lty = 1, pch = 19)
+lines(points, data[, 4], type = "o", cex=0.4, col = plot_colors[4], lty = 1, pch = 19)
+lines(points, data[, 5], type = "o", cex=0.4, col = plot_colors[5], lty = 1, pch = 19)
 
 lastXPoints <- tail(points, lastX)
 lastXData <- tail(x_labels, lastX)
