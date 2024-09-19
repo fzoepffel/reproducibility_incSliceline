@@ -46,6 +46,5 @@ for( i in 1: (numOfPoints)){
     }
 
     timeTaken = timeTaken / 10;
-    write(timeTaken, "results/Experiment4_timesSF"+ "_Prop"+ propStr+ "_" + (numOfPoints*iteration + i)+".dat", format="csv")
+    write(timeTaken, "results/Experiment4_timesSF"+ "_" + (numOfPoints*iteration + i)+".dat", format="csv")
 }
-

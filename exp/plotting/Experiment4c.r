@@ -26,7 +26,7 @@ for (i in (numOfPoints - lastX + 1):(numOfPoints)) {
     data1[i, 4] <- as.matrix(scan(file_name))[, 1]
 }
 for (i in (numOfPoints - lastX + 1):(numOfPoints)) {
-    file_name <- paste0("results/Experiment4_timesSF_Prop50_", (i + 10), ".dat")
+    file_name <- paste0("results/Experiment4_timesSF_", (i + 10), ".dat")
     data1[i, 5] <- as.matrix(scan(file_name))[, 1]
 }
 

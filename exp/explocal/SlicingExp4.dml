@@ -7,33 +7,20 @@ X = read($1);
 e = read($2);
 sigma = $3;
 iteration = $4;
-disableIncScorePruning = $5;
-disableIncSizePruning = $6;
-
-if(disableIncScorePruning & disableIncSizePruning){
-  pruningStrat = 3; 
-} else if (disableIncSizePruning){
-  pruningStrat = 2;
-} else if (disableIncScorePruning){
-  pruningStrat = 1;
-} else {
-  pruningStrat = 0;
-}
+pruningStrat = $5;
 
 
 str = ""
-if(disableIncScorePruning){
-    if(disableIncSizePruning){
-        str="BothDisabled"
-    }else{
-        str="ScoreDisabled"
-    }
-}else{
-    if(disableIncSizePruning){
-        str="SliceDisabled"
-    }else{
-        str="NoneDisabled"
-    }
+if(pruningStrat == 4){
+    str="BothDisabled"
+}else if (pruningStrat == 0){
+    str="NoneDisabled"
+}else if (pruningStrat == 1){
+    str="ScoreDisabled"
+}else if (pruningStrat == 2){
+    str="SliceDisabled"
+}else if (pruningStrat == 3){
+    str="MaxScoreDisabled"
 }
 
 X = X[, 1:8];

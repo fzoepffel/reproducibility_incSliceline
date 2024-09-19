@@ -14,7 +14,7 @@ SIGMA="10"
 for i in {1..3}
 do
   $CMD -f exp/explocal/SlicingExp4.dml -exec singlenode -stats \
-    -args data/Adult_X.csv data/Adult_o_e.csv $SIGMA 10 TRUE FALSE $i
+    -args data/Adult_X.csv data/Adult_o_e.csv $SIGMA 10 1 $i
 
   $CMD -f exp/explocal/SlicingExp4b.dml -exec singlenode -stats \
     -args data/Adult_X.csv data/Adult_o_e.csv $SIGMA 10 $i
@@ -23,16 +23,23 @@ done
 for i in {1..3}
 do
   $CMD -f exp/explocal/SlicingExp4.dml -exec singlenode -stats \
-    -args data/Adult_X.csv data/Adult_o_e.csv $SIGMA 10 FALSE TRUE $i
+    -args data/Adult_X.csv data/Adult_o_e.csv $SIGMA 10 2 $i
 done
 
 for i in {1..3}
 do
   $CMD -f exp/explocal/SlicingExp4.dml -exec singlenode -stats \
-    -args data/Adult_X.csv data/Adult_o_e.csv $SIGMA 10 FALSE FALSE $i
+    -args data/Adult_X.csv data/Adult_o_e.csv $SIGMA 10 3 $i
 done
+
 for i in {1..3}
 do
   $CMD -f exp/explocal/SlicingExp4.dml -exec singlenode -stats \
-    -args data/Adult_X.csv data/Adult_o_e.csv $SIGMA 10 TRUE TRUE $i
+    -args data/Adult_X.csv data/Adult_o_e.csv $SIGMA 10 0 $i
+done
+
+for i in {1..3}
+do
+  $CMD -f exp/explocal/SlicingExp4.dml -exec singlenode -stats \
+    -args data/Adult_X.csv data/Adult_o_e.csv $SIGMA 10 4 $i
 done
