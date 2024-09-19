@@ -8,7 +8,7 @@ lastX <- 10
 pdf(file="plots/Experiment4_Prop1.pdf", width=3.7, height=4.0, family="serif", pointsize=14)
 
 # Reading data
-data1 <- matrix(NA, nrow = numOfPoints, ncol = 5)
+data1 <- matrix(NA, nrow = numOfPoints, ncol = 6)
 for (i in (numOfPoints - lastX +1):(numOfPoints)) {
     file_name <- paste0("results/Experiment4_times_AllDisabled_Prop1_", (i +10), ".dat")
     data1[i, 1] <- as.matrix(scan(file_name))[, 1]
@@ -91,8 +91,8 @@ text(x = lastXPoints[floor(length(lastXPoints)/3)*2], y = 350,
      labels = expression(paste(frac(abs(italic(" addedX ")), abs(italic(" totalX "))), " = 0.0005")), cex = 0.5)
 
 # Add a legend
-legend("topleft", legend = c("No Pruning", "Full Pruning", "Size Pruning", "Score Pruning", "SliceLine"), 
-       col = plot_colors[1:5], lty = 1:2, pch = 19, cex=0.5)
+legend("topleft", legend = c("No Pruning", "Full Pruning", "Score Pruning", "Size Pruning", "SliceLine", "MaxScore Pruning"), 
+       col = plot_colors[1:6], lty = 1:2, pch = 19, cex=0.5)
 
 box()  # Box around plot       
 dev.off()
@@ -101,7 +101,8 @@ dev.off()
 output_data <- data.frame(X_Labels = lastXData, 
                           No_Pruning = tail(data[, 1], lastX), 
                           Full_Pruning = tail(data[, 2], lastX), 
-                          Size_Pruning = tail(data[, 3], lastX), 
-                          Score_Pruning = tail(data[, 4], lastX), 
+                          Score_Pruning = tail(data[, 3], lastX), 
+                          MaxSc_Pruning = tail(data[, 6], lastX),
+                          Size_Pruning = tail(data[, 4], lastX), 
                           SliceLine = tail(data[, 5], lastX))
 write.table(output_data, file = "results/allData/Experiment4_Prop1_AllData.csv", sep = ",", row.names = FALSE, col.names = TRUE)

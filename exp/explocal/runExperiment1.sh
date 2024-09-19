@@ -13,3 +13,6 @@ $CMD -f exp/explocal/SlicingExp1.dml -exec singlenode -stats \
 $CMD -f exp/explocal/SlicingExp1b.dml -exec singlenode -stats \
   -args data/Adult_X.csv data/Adult_o_e.csv $SIGMA
 
+$CMD -f exp/explocal/SlicingExp1encoded.dml -exec singlenode -stats \
+  -args data/Adult_X.csv data/Adult_o_e.csv $SIGMA
+

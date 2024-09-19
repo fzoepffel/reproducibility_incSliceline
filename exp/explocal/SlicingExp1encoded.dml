@@ -1,0 +1,73 @@
+# experiment 1 measures the execution time of the incremental slice line algorithm 
+# for 10 iterations with increasingly large proportion of addedX/totalX
+# the values are compared with the execution time of SliceFinder for the totalX (see SlicingExp1b.dml)
+
+X = read($1);
+e = read($2);
+X = X[, 1:8];
+sigma = $3;
+
+totalSize = nrow(X);
+write(totalSize, "results/Experiment1_encoded_totalXSize.dat", format="csv");
+
+# compute logarithmically increasing x values for the number of rows
+start = 2*sigma;
+# to make sure that the last iteration still has enough data 
+# so not all basic slices fall under the minSup we use 5*sigma
+end = (nrow(X) -(2*sigma))/2;
+num_points = 20;
+log_start = log(start);
+log_end = log(end);
+log_increment = (log_end - log_start) / (num_points/2 - 1);
+logarithmic_points = matrix(0, num_points, 1);
+for (i in 1:num_points/2) {
+    log_value = log_start + (i-1) * log_increment;
+    logarithmic_points[i,1] = floor(exp(log_value));
+}
+for (i in 1:num_points/2) {
+    if(i < num_points/2){
+        difference = logarithmic_points[num_points/2 - i +1, 1] - logarithmic_points[num_points/2 - i, 1];
+    } else {
+        difference = logarithmic_points[1,1];
+    }
+    logarithmic_points[num_points/2 + i, 1] = logarithmic_points[num_points/2 + i - 1, 1] + difference;
+}
+
+print(toString(logarithmic_points));
+
+i = 1;
+addedXSize = matrix(0, num_points, 1);
+
+# iterate over increasingly large addedX matrices and measure the execution time
+while(i <= nrow(logarithmic_points)){
+    n = as.scalar(logarithmic_points[i, 1]);
+    oldX = X[1:nrow(X) - n,]
+    oldE = e[1:nrow(e) - n,]
+    addedX1 = X[nrow(X) - n + 1 : nrow(X), ]
+    addedE1 = e[nrow(e) - n + 1 : nrow(e), ]
+    addedXSize[i, 1] = nrow(addedX1);
+
+    [TK, TKC, D, L, meta, Stats, Xout, eOut, foffb, foffe, params] = incSliceLine(addedX=oldX, addedE=oldE, k=10,
+        alpha=0.95, minSup=sigma, tpBlksz=16, verbose=TRUE, encodeLat = TRUE);
+
+    timeTaken = 0;
+    for(j in 1: 10){
+
+        start = time();
+        [TK2, TKC2, D2, L2, meta2, Stats2, Xout2, eOut2, foffb2, foffe2, params2] = incSliceLine(addedX=addedX1, oldX = Xout, oldE = eOut, addedE=addedE1, prevLattice = L, metaPrevLattice=meta, prevStats = Stats, prevTK = TK, prevTKC = TKC, k=10,
+        alpha=0.95, minSup=sigma, tpBlksz=16, verbose=TRUE, params=params, prevFoffb = foffb, prevFoffe = foffe, encodeLat = TRUE);
+        end = time()
+
+        timeTaken = timeTaken + (((end-start) / 1000000 -1500 ))
+    }
+    proportion = nrow(addedX1)/ nrow(X);
+    write(proportion, "results/Experiment1_encoded_proportions" +i + ".dat", format="csv");
+    timeTaken = timeTaken / 10;
+
+    write(timeTaken, "results/Experiment1_encoded_times" +i + ".dat", format="csv");
+    
+    i = i + 1;
+}
+
+# write the logarithmic points to a file for the plot's x-axis
+write(addedXSize, "results/Experiment1_encoded_addedXSize.dat", format="csv");
