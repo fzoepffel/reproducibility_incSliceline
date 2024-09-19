@@ -12,15 +12,15 @@ pruningStrat = $5;
 
 str = ""
 if(pruningStrat == 4){
-    str="BothDisabled"
+    str="AllDisabled"
 }else if (pruningStrat == 0){
     str="NoneDisabled"
 }else if (pruningStrat == 1){
-    str="ScoreDisabled"
+    str="OnlyScore"
 }else if (pruningStrat == 2){
-    str="SliceDisabled"
+    str="OnlySlice"
 }else if (pruningStrat == 3){
-    str="MaxScoreDisabled"
+    str="OnlyMaxScore"
 }
 
 X = X[, 1:8];
@@ -31,7 +31,7 @@ nrows = matrix(0, numOfPoints, 1);
 proportion = 0;
 propStr = 0;
 
-propVal = $7;
+propVal = $6;
 
 if(propVal == 1){
     proportion = 0.0005;

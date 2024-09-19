@@ -9,12 +9,12 @@ format_ticks <- function(x) {
 }
 
 for( i in 1:6){
-  file_name1 <- paste0("plots/Experiment5_ScoreDisabled", i, "NoWhiteNoTitle.pdf")
+  file_name1 <- paste0("plots/Experiment5_OnlyScore", i, "NoWhiteNoTitle.pdf")
   pdf(file=file_name1,width=3.2, height=2.5,family="serif", pointsize=14)
   par(mar = c(1.7, 2.2, 0.2, 0.2) + 0.1) 
 
   data0 = read.table("results/Experiment5SF_D.dat", sep=",")[,2:3]
-  file_name2 <- paste0("results/Experiment5_D_ScoreDisabled", i, ".dat")
+  file_name2 <- paste0("results/Experiment5_D_OnlyScore", i, ".dat")
   data2 = read.table(file_name2, sep=",")[,2:3]
   data1 = t(as.matrix(data0))
   data1 = rbind(data1, t(as.matrix(data2)))
@@ -59,7 +59,7 @@ for( i in 1:6){
   dev.off()
 
   # Save the data to a CSV file
-  output_file <- paste0("results/allData/Experiment5_ScoreDisabled", i, "_AllData.csv")
+  output_file <- paste0("results/allData/Experiment5_OnlyScore", i, "_AllData.csv")
   output_data <- as.data.frame(t(data1))  # Transpose the data back for saving
   colnames(output_data) <- c("SF_Evaluated", "SF_Valid", "incSL_Evaluated", "incSL_Valid")
   

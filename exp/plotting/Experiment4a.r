@@ -10,7 +10,7 @@ pdf(file="plots/Experiment4_Prop1.pdf", width=3.7, height=4.0, family="serif", p
 # Reading data
 data1 <- matrix(NA, nrow = numOfPoints, ncol = 5)
 for (i in (numOfPoints - lastX +1):(numOfPoints)) {
-    file_name <- paste0("results/Experiment4_times_BothDisabled_Prop1_", (i +10), ".dat")
+    file_name <- paste0("results/Experiment4_times_AllDisabled_Prop1_", (i +10), ".dat")
     data1[i, 1] <- as.matrix(scan(file_name))[, 1]
 }
 for (i in (numOfPoints - lastX +1):(numOfPoints)) {
@@ -18,16 +18,20 @@ for (i in (numOfPoints - lastX +1):(numOfPoints)) {
     data1[i, 2] <- as.matrix(scan(file_name))[, 1]
 }
 for (i in (numOfPoints - lastX +1):(numOfPoints)) {
-    file_name <- paste0("results/Experiment4_times_ScoreDisabled_Prop1_", (i +10), ".dat")
+    file_name <- paste0("results/Experiment4_times_OnlyScore_Prop1_", (i +10), ".dat")
     data1[i, 3] <- as.matrix(scan(file_name))[, 1]
 }
 for (i in (numOfPoints - lastX +1):(numOfPoints)) {
-    file_name <- paste0("results/Experiment4_times_SliceDisabled_Prop1_", (i +10), ".dat")
+    file_name <- paste0("results/Experiment4_times_OnlySlice_Prop1_", (i +10), ".dat")
     data1[i, 4] <- as.matrix(scan(file_name))[, 1]
 }
 for (i in (numOfPoints - lastX +1):(numOfPoints)) {
     file_name <- paste0("results/Experiment4_timesSF_", (i +10), ".dat")
     data1[i, 5] <- as.matrix(scan(file_name))[, 1]
+}
+for (i in (numOfPoints - lastX +1):(numOfPoints)) {
+    file_name <- paste0("results/Experiment4_times_OnlyMaxScore_Prop1_", (i +10), ".dat")
+    data1[i, 6] <- as.matrix(scan(file_name))[, 1]
 }
 
 data <- as.matrix(data1 / 1000)
@@ -44,7 +48,7 @@ x_labels <- x_labels / 1000
 x_labels <- round(x_labels, 1)
 
 points <- seq(1, numOfPoints)
-plot_colors <- c("#d62728", "#ff7f0e","#2ca02c", "cornflowerblue", "gray40")
+plot_colors <- c("#d62728", "#ff7f0e","#2ca02c", "cornflowerblue", "gray40", "black")
 
 par(mgp = c(3, 0.6, 0))
 
@@ -70,6 +74,7 @@ lines(points, data[, 2], type = "o", cex=0.4, col = plot_colors[2], lty = 1, pch
 lines(points, data[, 3], type = "o", cex=0.4, col = plot_colors[3], lty = 1, pch = 19)
 lines(points, data[, 4], type = "o", cex=0.4, col = plot_colors[4], lty = 1, pch = 19)
 lines(points, data[, 5], type = "o", cex=0.4, col = plot_colors[5], lty = 1, pch = 19)
+lines(points, data[, 6], type = "o", cex=0.4, col = plot_colors[6], lty = 1, pch = 19)
 
 lastXPoints <- tail(points, lastX)
 lastXData <- tail(x_labels, lastX)
