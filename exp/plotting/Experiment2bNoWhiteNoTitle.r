@@ -74,7 +74,7 @@ text(x = lastXPoints[floor(length(lastXPoints)/4)], y = 35,
 
 # Add a legend
 legend("topright", legend = c("IncSliceLine", "SliceLine"), 
-       col = plot_colors[1:2], lty = 1:2, pch = 19, cex=0.6)
+       col = plot_colors[1:2], lty = 1, pch = 19, cex=0.6)
 
 box()	              # box around plot       
 dev.off()

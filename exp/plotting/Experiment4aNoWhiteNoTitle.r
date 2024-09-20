@@ -92,8 +92,8 @@ text(x = lastXPoints[floor(length(lastXPoints)/5)*4], y = 150,
      labels = expression(paste(frac(abs(italic(" addedX ")), abs(italic(" totalX "))), " = 0.0005")), cex = 0.6)
 
 # Add a legend
-legend("topleft", legend = c("No Pruning", "Full Pruning", "Score Pruning", "Size Pruning", "SliceLine", "MaxScore Pruning"), 
-       col = plot_colors[1:6], lty = 1:2, pch = 19, cex=0.5)
+legend("topleft", legend = c("No Pruning", "Full Pr.", "Score Pr.", "MaxScore Pr.", "Size Pr.", "SliceLine"), 
+       col = c("#d62728", "#ff7f0e","#2ca02c", "black", "cornflowerblue", "gray40"), lty = 1, pch = 19, cex=0.5)
 
 box()  # Box around plot       
 dev.off()

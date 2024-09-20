@@ -31,7 +31,7 @@ for (i in (numOfPoints - lastX + 1):(numOfPoints)) {
     data1[i, 5] <- as.matrix(scan(file_name))[, 1]
 }
 for (i in (numOfPoints - lastX +1):(numOfPoints)) {
-    file_name <- paste0("results/Experiment4_times_OnlyMaxScore_Prop1_", (i +10), ".dat")
+    file_name <- paste0("results/Experiment4_times_OnlyMaxScore_Prop10_", (i +10), ".dat")
     data1[i, 6] <- as.matrix(scan(file_name))[, 1]
 }
 
@@ -88,11 +88,11 @@ axis(1, las=1, at=lastXPoints[seq(1, length(lastXPoints), by=ceiling(length(last
 mtext(2, text="Execution time (s)", line=1.3, cex=0.6) 
 mtext(1, text="Size Feature Mat. ((# rows)/1000)", line=1.3, cex=0.6) 
 
-text(x = lastXPoints[floor(length(lastXPoints)/3)*2], y = 35, 
+text(x = lastXPoints[floor(length(lastXPoints)/5)*4], y = 150, 
      labels = expression(paste(frac(abs(italic(" addedX ")), abs(italic(" totalX "))), " = 0.1")), cex = 0.6)
 
-legend("topleft", legend = c("No Pruning", "Full Pruning", "Score Pruning", "Size Pruning", "SliceLine", "MaxScore Pruning"), 
-       col = plot_colors[1:6], lty = 1:2, pch = 19, cex=0.5)
+legend("topleft", legend = c("No Pruning", "Full Pr.", "Score Pr.", "MaxScore Pr.", "Size Pr.", "SliceLine"), 
+       col = c("#d62728", "#ff7f0e","#2ca02c", "black", "cornflowerblue", "gray40"), lty = 1, pch = 19, cex=0.5)
 
 box()  # Box around plot       
 dev.off()
