@@ -1,7 +1,7 @@
 require(graphics)
 require(Matrix)
 
-proportions <- c(0.01, 0.03, 0.09, 0.30, 0.50, 0.99)
+proportions <- c(0.01, 0.03, 0.09, 0.30, 0.887, 0.99)
 
 for( i in 1:6){
   file_name1 <- paste0("plots/Experiment5_OnlySize", i, ".pdf")

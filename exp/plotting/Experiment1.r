@@ -76,5 +76,5 @@ box()
 
 dev.off()
 
-output_data <- data.frame(Proportion = proportions_lab, Time_IncSliceLine = data[, 1], Time_SliceLine = data[, 2])
+output_data <- data.frame(Proportion = proportions_lab, Time_IncSL_Decoded = data[, 1], Time_IncSL_Encoded = data[, 3], Time_SliceLine = data[, 2])
 write.table(output_data, file = "results/allData/Experiment1_AllData.csv", sep = ",", row.names = FALSE, col.names = TRUE)

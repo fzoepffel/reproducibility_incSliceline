@@ -6,7 +6,7 @@ e = read($2);
 X = X[, 1:8];
 
 nTotalRows = nrow(X);
-proportionList = list(0.0005, 0.03, 0.09, 0.30, 0.50, 0.9995);
+proportionList = list(0.0005, 0.03, 0.09, 0.30, 0.887, 0.9995);
 
 for(i in 1:6){
     proportion = as.scalar(proportionList[i]);
