@@ -11,7 +11,7 @@ pruningStrat = $5;
 
 
 str = ""
-if(pruningStrat == 4){
+if(pruningStrat == 5){
     str="AllDisabled"
 }else if (pruningStrat == 0){
     str="NoneDisabled"

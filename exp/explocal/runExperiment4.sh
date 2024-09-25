@@ -41,5 +41,5 @@ done
 for i in {1..3}
 do
   $CMD -f exp/explocal/SlicingExp4.dml -exec singlenode -stats \
-    -args data/Adult_X.csv data/Adult_o_e.csv $SIGMA 10 4 $i
+    -args data/Adult_X.csv data/Adult_o_e.csv $SIGMA 10 5 $i
 done

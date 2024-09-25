@@ -105,7 +105,7 @@ for(i in 1:6){
     print("nrow(oldX): " + nrow(oldX));
 
     [TK, TKC, D, L, meta, Stats, Xout, eOut, foffb, foffe, params] = incSliceLine(addedX=addedX, oldX = oldX, oldE = oldE, addedE=addedE, prevLattice = L, metaPrevLattice=meta, prevStats = Stats, prevTK = TK, prevTKC = TKC, k=10,
-        alpha=0.95, minSup=sigma, tpBlksz=16, verbose=TRUE, params=params, prevFoffb = foffb, prevFoffe = foffe, encodeLat = FALSE, pruningStrat = 4);
+        alpha=0.95, minSup=sigma, tpBlksz=16, verbose=TRUE, params=params, prevFoffb = foffb, prevFoffe = foffe, encodeLat = FALSE, pruningStrat = 5);
 
     write(D, "results/Experiment5_D_AllDisabled"+i+".dat", format="csv")
 }
